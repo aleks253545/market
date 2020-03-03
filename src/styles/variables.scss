@@ -1,0 +1,26 @@
+$primary-color:#5E98FF;
+$secondary-color:#7E8AA8;
+$third-color:#FFFFFF;
+
+@mixin  flex($direction,$justify,$align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin button ($width, $height,$font-size:1rem){
+  border:none;
+  background-color:$primary-color;
+  width: $width;
+  height: $height;
+  color: $third-color;
+  font-style: normal;
+  font-weight: bold;
+  font-size: $font-size;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  justify-content: center;
+  text-transform: uppercase;
+}

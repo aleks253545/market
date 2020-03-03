@@ -1,0 +1,21 @@
+@import '../../../styles/variables.scss';
+
+.box{
+  height: 15rem;
+  @include flex(column,space-around,center);
+}
+.title{
+  margin: 0 0 2rem;
+  color: $third-color;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 5.3rem;
+}
+.btnBox{
+  width: 100%;
+  @include flex(row,space-around,center);
+}
+.button{
+
+  @include button(35%,3rem);
+}

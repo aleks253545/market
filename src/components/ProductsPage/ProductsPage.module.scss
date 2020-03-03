@@ -1,0 +1,7 @@
+@import '../../styles/variables.scss';
+
+.productsBox{
+  @include flex(column,auto,center);
+  flex-grow:2;
+  background-color: #F0F4FE;
+}

@@ -1,0 +1,22 @@
+@import '../../../styles/variables.scss';
+
+.prodMenu{
+  @include flex(column,space-between,flex-start);
+  width: 80%;
+}
+
+.topBlockMenu{
+  width: 100%;
+  @include flex(row,space-between,center);
+}
+
+.menuTitle{
+  font-size: 2.5rem;
+}
+
+.addButton{
+  @include button(9rem,2rem,0.8rem);
+}
+.menuTabs{
+  margin-right: 2rem;
+}

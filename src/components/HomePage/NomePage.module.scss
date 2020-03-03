@@ -1,0 +1,10 @@
+@import '../../styles/variables.scss';
+
+.main{
+  @include flex(column,center,center);
+  height: 100%;
+  flex-grow: 2;
+  background-image: url('../../img/Rectangle\ 9.jpg');
+  background-repeat:no-repeat;
+  background-size: cover;
+}

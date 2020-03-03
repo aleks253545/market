@@ -1,0 +1,35 @@
+@import '../../../../styles/variables.scss';
+.bragSection{
+  margin: auto;
+  width: 22rem;
+  height: 22rem;
+  border: 10px solid #F0F4FE; 
+  position: relative;
+}
+.zoneText{
+  margin: 1rem;
+}
+.dialogText{
+  margin-left:10px;
+  text-transform: uppercase;
+  color:$primary-color;
+}
+.thumbs{
+  margin: auto;
+  width: 22rem;
+  height: 22rem;
+  border: 10px solid #F0F4FE;
+  position: absolute;
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.prevImage{
+  width: 14rem;
+  height: 14rem;
+}
+.dialodBlock{
+  cursor: pointer;
+}

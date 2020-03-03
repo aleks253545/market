@@ -1,0 +1,30 @@
+@import '../../styles/variables.scss';
+.header { 
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo{
+  margin-left: 5rem;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  color: $primary-color;
+}
+.rightSide{
+  margin-right: 3rem;
+  width: 20rem;
+  color: $secondary-color;
+  @include flex(row,space-between,center);
+  &_popUp{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

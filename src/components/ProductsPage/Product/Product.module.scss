@@ -1,0 +1,55 @@
+@import '../../../styles/variables.scss';
+.product{
+  @include flex(row,flex-start,center);
+  background-color: $third-color;
+  margin-top: 2rem;
+}
+
+.counter{
+  @include flex(row,center,space-between);
+  margin: 1rem 0 1rem auto;
+}
+
+.productImage{
+  margin:2rem 3rem;
+}
+
+.infoBlock{
+  width: 55%;
+  margin:2rem 0;
+}
+
+.productName{
+  color:$secondary-color;
+}
+.productDescription{
+  font-style: normal;
+  font-weight: normal;
+  color:$secondary-color;
+}
+
+.counterInp{
+  width: 40px;
+  height: 40px;
+  border:none;
+  text-align: center;
+  line-height: 40px;
+}
+
+.btnCounter{
+  background-color: #F0F4FE;
+  color: $primary-color;
+  width:40px;
+  height: 40px;
+  font-size: 30px;
+  border:none;
+}
+
+.addBtn{
+  margin: 1rem 2rem 1rem auto;
+  @include button(12rem,3rem,0.8rem);
+  img{
+    margin-right:10px;
+    color:white;
+  }
+}
