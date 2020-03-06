@@ -3,6 +3,7 @@
   @include flex(row,flex-start,center);
   background-color: $third-color;
   margin-top: 2rem;
+  width: 100%;
 }
 
 .counter{
@@ -45,7 +46,7 @@
   border:none;
 }
 
-.addBtn{
+.addBtn,.editBtn{
   margin: 1rem 2rem 1rem auto;
   @include button(12rem,3rem,0.8rem);
   img{

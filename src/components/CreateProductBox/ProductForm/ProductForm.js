@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import s from './ProductForm.module.scss';
 import DragAndDrop from '../../../containers/DragAndDrop';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 function ProductForm(props) {
   let nameRef = React.createRef();
@@ -19,7 +19,11 @@ function ProductForm(props) {
   const createProduct = () => {
     props.onCreateProduct();
   }
+  if(props.reqStatus === 'success'){
+    return <Redirect to={'/products'}></Redirect>
+  }
   return (
+    
       <div className = {s.productForm}>
         <div className = {s.leftSite}>
           <label for='titleInp' className = {s.subtitle}>Title</label>

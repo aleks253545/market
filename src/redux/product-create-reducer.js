@@ -4,7 +4,8 @@ const CHANGE_NAME = 'CHANGE_NAME',
 CHANGE_DESCRIPTION = 'CHANGE_DESCRIPTION',
 SET_IMAGE = 'SET_IMAGE',
 CHANGE_QUANTITY = 'CHANGE_QUANTITY',
-CLOSE = 'CLOSE';
+CLOSE = 'CLOSE',
+SET_REQ = 'SET_REQ';
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,
@@ -29,12 +30,20 @@ export const setImage=(image)=>({
 export const close = () => ({
   type:CLOSE
 })
+export const setReqStatus = (status) => ({
+  type: SET_REQ,
+  status
+})
 
 
 
-
-
-let initialState = {name:'', description:'', quantity:1, image:null};
+let initialState = {
+  name: '', 
+  description: '', 
+  quantity: 1, 
+  image: null, 
+  reqStatus:''
+};
 let createProductReducer = (state = initialState, action)=>{
   switch(action.type){
     case 'CHANGE_DESCRIPTION': {
@@ -68,7 +77,14 @@ let createProductReducer = (state = initialState, action)=>{
         quantity: 1, 
         name: '',
         description: '',
-        image: null
+        image: null,
+        reqStatus:''
+      }
+    }
+    case 'SET_REQ': {
+      return {
+        ...state,
+        reqStatus:action.status
       }
     }
     default: {
@@ -79,16 +95,18 @@ let createProductReducer = (state = initialState, action)=>{
 
 export const crateProduct = () => {
   return (dispatch, getState)=>{
-    let userId = getState().homePage.userId;
-    let image = getState().createPage.image;
+    let user = getState().homePage.userId;
     axios.post('http://localhost:3080/products',{
-      image,
-      userId
+      ...getState().createPage,
+      user
     })
     .then((res) => {
-      console.log(res);
+      dispatch(setReqStatus('success'));
+      dispatch(close());
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(setReqStatus('error'))
+    });
   }
 }
 

@@ -8,7 +8,8 @@ let mapStateToProps = (state) => {
     return{
       name:state.createPage.name,
       description: state.createPage.description,
-      quantity: state.createPage.quantity
+      quantity: state.createPage.quantity,
+      reqStatus: state.createPage.reqStatus
     }
 }
 let mapDispatchToProps=(dispath)=>{

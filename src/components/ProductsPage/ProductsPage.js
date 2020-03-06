@@ -2,13 +2,14 @@ import React from 'react';
 
 import s from './ProductsPage.module.scss';
 import ProductsMenu from './ProductsMenu/ProductsMenu';
-import ProductsBox from './ProductsBox/ProductsBox';
+import ProductsBoxContainer from '../../containers/productsBoxContainer';
 
 function ProductsPage() {
+
   return (
     <main className = {s.productsBox}>
       <ProductsMenu></ProductsMenu>
-      <ProductsBox></ProductsBox>
+      <ProductsBoxContainer></ProductsBoxContainer>
     </main>
   )
 }
