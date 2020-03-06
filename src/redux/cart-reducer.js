@@ -1,23 +1,22 @@
 import axios from 'axios'
 
-const initialState = { products:[]};
-const SET_PRODUCTS = 'SET_PRODUCTS',;
+const initialState = { cartProducts:[]};
+const SET_CART_PRODUCTS = 'SET_CART_PRODUCTS';
 
-export const setProducts = (products) => {
+export const setCartProducts = (cartProducts) => {
   return {
-    type:SET_PRODUCTS,
-    products
+    type:SET_CART_PRODUCTS,
+    cartProducts
   }
 }
 let cartReducer = (state = initialState, action) => {
   switch(action.type) {   
-    case 'SET_PRODUCTS': {
-      let downloadProds = state.products.concat();
+    case 'SET_CART_PRODUCTS': {
+      let downloadProds = state.cartProducts.concat();
       downloadProds.push(...action.products)
       return {
         ...state,
-        products: downloadProds,
-        offset: state.offset + action.products.length
+        cartProducts: downloadProds
       }
     }
     default : {
@@ -28,7 +27,7 @@ let cartReducer = (state = initialState, action) => {
 
 export const downloadProductsOnCart = () => {
   return (dispatch, getState)=>{
-    axios.get(`http://localhost:3080/cards`)
+    axios.get(`http://localhost:3080/carts?userId=${getState().homePage.userId}`)
     .then((res) => {
       if(res.data.length > 0){
         console.log(res.data);

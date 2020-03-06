@@ -10,14 +10,14 @@ import throttle from '../../../any/throtle'
     if(!props.products.length){
       props.onDownloadRepos();
     }
-    setInterval(() => {
+    const interval = setInterval(() => {
       let scrollHeight=document.documentElement.scrollHeight,
       clientHeight=document.documentElement.clientHeight;
       if(scrollHeight < clientHeight + window.pageYOffset + 10 && props.products.length) {
         props.onDownloadRepos();
       }
     },2000);
-  })  
+  },[])  
   let products = props.products.map((product) => {
     return (
       <Product 

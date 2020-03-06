@@ -6,11 +6,12 @@ import { useEffect } from "react";
 
 function CartProductsBox(props) {
   useEffect(() =>{
-    if(!props.products.length){
+    if(!props.cartProducts.length){
       props.downloadProductOnCart();
     }
   })
-  let products = props.products.map((product) => {
+  console.log(props)
+  let cartProducts = props.cartProducts.map((product) => {
     return (
       <Product 
       id = {product.id} 
@@ -27,7 +28,7 @@ function CartProductsBox(props) {
   })
   return ( 
     <div className = {s.cartBox}>
-      {products}
+      {cartProducts}
     </div>
   )
 }

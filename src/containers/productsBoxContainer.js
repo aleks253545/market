@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 
 import ProductsBox from '../components/ProductsPage/ProductsBox/ProductsBox'
 
-import { downloadProducts, updateCounter, addTocard} from '../redux/products-reducer';
+import { downloadProducts, updateCounter, addToCard} from '../redux/products-reducer';
 let mapStateToProps = (state) => {
+    console.log(state);
     return{
         products: state.productsPage.products,
         userId: state.homePage.userId
@@ -19,7 +20,7 @@ let mapDispatchToProps = (dispath) => {
             dispath(updateCounter(id, value))
         },
         onAddToCart: (id) => {
-            dispath(addTocard(id))
+            dispath(addToCard(id))
         }   
     }
 }

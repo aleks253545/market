@@ -6,7 +6,7 @@ import {downloadProductsOnCart} from '../redux/cart-reducer';
 
 let mapStateToProps = (state) => {
     return{
-      products: state.cartPage.products
+      cartProducts: state.cartPage.cartProducts
     }
 }
 let mapDispatchToProps=(dispath)=>{
@@ -17,5 +17,5 @@ let mapDispatchToProps=(dispath)=>{
 
     }
 }
-const cartBoxContainer = connect(mapStateToProps, mapDispatchToProps)(CartProductsBox);
-export default cartBoxContainer;
+const CartBoxContainer = connect(mapStateToProps, mapDispatchToProps)(CartProductsBox);
+export default CartBoxContainer;

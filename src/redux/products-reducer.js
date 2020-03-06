@@ -3,7 +3,7 @@ import axios from 'axios'
 const SET_PRODUCTS = 'SET_PRODUCTS',
 SET_COUNTER='SET_COUNTER';
 
-export const setProducts = (products) => {
+ const setProducts = (products) => {
   return {
     type:SET_PRODUCTS,
     products
@@ -19,11 +19,11 @@ export const setProducts = (products) => {
   
  }
 
-let initilalState = {
+let initialState = {
   products:[],
   offset:0
 };
-let productsReducer = (state = initilalState, action) => {
+let productsReducer = (state = initialState, action) => {
   switch(action.type) {   
     case 'SET_PRODUCTS': {
       let downloadProds = state.products.concat();
@@ -75,7 +75,7 @@ export const updateCounter = (id, value) => {
     });
   }
 }
-export const addTocard = (productId) => {
+export const addToCard = (productId) => {
   
   return (dispatch, getState) => {
     axios.post(`http://localhost:3080/carts`,{
