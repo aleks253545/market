@@ -13,11 +13,15 @@ function MainHeader(props) {
           <div className = {s.rightSide}>
             <Link to = '/products'>
               <span className= {s.rightSide_products}>Products</span>
-            </Link>  
+            </Link> 
+            <div className = {s.signOut}>
+              <img src = {user} className = {s.OutImg}></img>
+              <span className = {s.dropBlock}>Log Out</span>
+            </div> 
             <Link to = '/cart'>
               <img src = {cart}></img>
             </Link>
-            <img src = {user}></img>
+            
           </div>
           ) : (
           <div className = {s.rightSide}>

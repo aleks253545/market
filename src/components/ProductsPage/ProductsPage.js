@@ -1,14 +1,14 @@
 import React from 'react';
 
 import s from './ProductsPage.module.scss';
-import ProductsMenu from './ProductsMenu/ProductsMenu';
 import ProductsBoxContainer from '../../containers/productsBoxContainer';
+import ProductsMenuContainer from '../../containers/ProductMenuContainer';
 
 function ProductsPage() {
 
   return (
     <main className = {s.productsBox}>
-      <ProductsMenu></ProductsMenu>
+      <ProductsMenuContainer></ProductsMenuContainer>
       <ProductsBoxContainer></ProductsBoxContainer>
     </main>
   )

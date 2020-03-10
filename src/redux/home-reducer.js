@@ -1,8 +1,10 @@
 import axios from 'axios';
-
+import cookie from 'react-cookies';
 const CHANGE_LOGIN = 'CHANGE_LOGIN',
 CHANGE_PASSWORD='CHANGE_PASSWORD',
-SIGN_IN_USER='SIGN_IN_USER';
+SIGN_IN_USER='SIGN_IN_USER',
+LOG_OUT = 'LOG_OUT';
+
 
 export const changeLogin=(login)=>({
   type:CHANGE_LOGIN,
@@ -18,6 +20,9 @@ export const changePassword=(password)=>({
 export const signInUser=(id)=>({
   type:SIGN_IN_USER,
   id
+});
+export const logOutAC=()=>({
+  type:'LOG_OUT',
 });
 
 
@@ -46,12 +51,39 @@ let homeReducer=(state=initialState,action)=>{
         userId:action.id
       }
     }
+    case 'LOG_OUT': {
+      return {
+        ...state,
+        userId: null,
+        authorized: false
+      }
+    }
     default:{
       return state;
     }
   }
 }
+export const logOut = () => {
+  return (dispatch) => {
+      cookie.save('login', '', { path:'' });
+    cookie.save('password', '', { path:'' });
+    dispatch(logOutAC())
+  }
 
+}
+export const checkCookie = () => {
+    return async (dispatch) => { 
+      let  login = await  cookie.load('login'),
+      password = await cookie.load('password') ;
+      console.log(password, password);
+      axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
+      .then((res) => {
+        dispatch(signInUser(res.data));
+      })
+      .catch((err) => console.log(err));
+    }
+  
+}
 export const SigUpUser = (login,password) => {
   return (dispatch)=>{
     axios.post('http://localhost:3080/users',{
@@ -67,11 +99,10 @@ export const SigUpUser = (login,password) => {
 
 export const SigInUser = (login,password) => {
   return (dispatch)=>{
-    axios.get(`http://localhost:3080/users?login=${login}&password=${password}`,{
-      login,
-      password
-    })
+    axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
     .then((res) => {
+      cookie.save('login', `${login}`, { path:'' });
+      cookie.save('password', `${password}`, { path:'' });
       dispatch(signInUser(res.data));
 
     })

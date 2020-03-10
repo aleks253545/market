@@ -6,7 +6,8 @@ import {downloadProductsOnCart, updateCartCounter} from '../redux/cart-reducer';
 
 let mapStateToProps = (state) => {
     return{
-      cartProducts: state.cartPage.cartProducts
+      cartProducts: state.cartPage.cartProducts,
+      userId: state.homePage.userId
     }
 }
 let mapDispatchToProps=(dispath)=>{

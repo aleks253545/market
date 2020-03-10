@@ -11,7 +11,7 @@ function Product(props) {
   const addToCart = () => {
     props.onAddToCart(props.id)
   }
-  if(props.quantity > 0) {
+  if(props.quantity > 0 && props.userId !== props.owner) {
     counter=(
           <div className = {s.counter}> 
           <button 

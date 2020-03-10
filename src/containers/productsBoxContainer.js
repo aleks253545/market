@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 
 import ProductsBox from '../components/ProductsPage/ProductsBox/ProductsBox'
 
-import { downloadProducts, updateCounter, addToCard} from '../redux/products-reducer';
+import { downloadProducts, updateCounter, addToCard, cleanProducts} from '../redux/products-reducer';
 let mapStateToProps = (state) => {  
     return{
         products: state.productsPage.products,
-        userId: state.homePage.userId
+        userId: state.homePage.userId,
+        prodFilter: state.productsPage.prodFilter
     }
 }
 let mapDispatchToProps = (dispath) => {
@@ -20,7 +21,10 @@ let mapDispatchToProps = (dispath) => {
         },
         onAddToCart: (id) => {
             dispath(addToCard(id))
-        }   
+        },
+        onDestroyBox : () => {
+            dispath(cleanProducts());
+        }
     }
 }
 const ProductsBoxContainer = connect(mapStateToProps, mapDispatchToProps)(ProductsBox);

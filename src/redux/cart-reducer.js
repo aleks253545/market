@@ -10,28 +10,29 @@ export const setCartProducts = (cartProducts) => {
     cartProducts
   }
 }
-export const setCartCounter = (cartProducts) => {
+export const setCartCounter = (value, id) => {
   return {
     type:SET_CART_COUNTER,
-    cartProducts
+    value,
+    id
   }
 }
 let cartReducer = (state = initialState, action ) => {
   switch(action.type) {   
     case 'SET_CART_PRODUCTS': {
-      let downloadProds = state.cartProducts.concat();
-      downloadProds.push(...action.cartProducts);
       return {
         ...state,
-        cartProducts: downloadProds
+        cartProducts: action.cartProducts
       }
     }
     case 'SET_CART_COUNTER': {
-      let products = state.cartProducts.concat();
-      products.find((product) => product.id === action.id).quantity = action.value;
+      let cartProducts = state.cartProducts.concat();
+      console.log(action.value)
+      cartProducts.find((product) => product.id === action.id).quantity = action.value;
+      console.log(cartProducts);
       return {
         ...state,
-         products: products
+        cartProducts: cartProducts
       }
     }
     default : {
@@ -45,7 +46,6 @@ export const downloadProductsOnCart = () => {
     axios.get(`http://localhost:3080/carts?userId=${getState().homePage.userId}`)
     .then((res) => {
       if(res.data.length > 0){
-        console.log(res.data);
         dispatch(setCartProducts(res.data));
       }
     })

@@ -17,12 +17,12 @@ function SignInForm(props) {
   }
 
   useEffect(() => {
+    props.checkCookie();
     return () => {
       props.changePass('');
       props.changeLog('');
     }
   }, [ ])
-
   if(props.authorized === true ){
     return <Redirect to={'/home/welcoming'}></Redirect>
   }

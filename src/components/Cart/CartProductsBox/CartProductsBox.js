@@ -6,17 +6,17 @@ import { useEffect } from "react";
 
 function CartProductsBox(props) {
   useEffect(() =>{
-    if(!props.cartProducts.length){
       props.downloadProductOnCart();
-    }
-  })
-  console.log(props)
+      return () => {
+
+      }
+  },[])
   let cartProducts = props.cartProducts.map((product) => {
     return (
       <Product 
       id = {product.id} 
       name = {product.name}
-      owner = {product.user}
+      owner = {product.userId}
       userId = {props.userId}
       description = {product.description}
       key = {product.id}

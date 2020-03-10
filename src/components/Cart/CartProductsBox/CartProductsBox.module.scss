@@ -1,4 +1,5 @@
 @import '../../../styles/variables.scss';
 .cartBox{
   @include flex(column,flex-start,flex-start);
+  width: 100%;
 }
