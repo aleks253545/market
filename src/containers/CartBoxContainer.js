@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import CartProductsBox from '../components/Cart/CartProductsBox/CartProductsBox'
-import {downloadProductsOnCart} from '../redux/cart-reducer';
+import {downloadProductsOnCart, updateCartCounter} from '../redux/cart-reducer';
 
 let mapStateToProps = (state) => {
     return{
@@ -14,6 +14,9 @@ let mapDispatchToProps=(dispath)=>{
       downloadProductOnCart: () => {
         dispath(downloadProductsOnCart());
       },
+      onUpdateCounter: (id, value) => {
+        dispath(updateCartCounter(id, value))
+    },
 
     }
 }

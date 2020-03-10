@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const SET_PRODUCTS = 'SET_PRODUCTS',
-SET_COUNTER='SET_COUNTER';
+SET_COUNTER='SET_COUNTER',
+ADD_TO_CART='ADD_TO_CART';
 
  const setProducts = (products) => {
   return {
@@ -18,10 +19,19 @@ SET_COUNTER='SET_COUNTER';
    }
   
  }
+ const addTocart = (productId, counter) => {
+  return {
+   type: ADD_TO_CART,
+   counter,
+   productId
+  }
+ 
+}
 
 let initialState = {
   products:[],
-  offset:0
+  offset:0,
+  page: 'products'
 };
 let productsReducer = (state = initialState, action) => {
   switch(action.type) {   
@@ -40,6 +50,17 @@ let productsReducer = (state = initialState, action) => {
       return {
         ...state,
          products: products
+      }
+    }
+    case 'ADD_TO_CART':{
+      return {
+        ...state,
+        products: state.products.concat().map((product)=> {
+          if(action.productId === product.id){
+            product.quantity = action.counter;
+          }
+          return product
+        })
       }
     }
     default : {
@@ -63,9 +84,9 @@ export const downloadProducts = () => {
   }
 }
 
-export const updateCounter = (id, value) => {
+export const updateCounter = (id, value, status) => {
   return (dispatch, getState)=>{
-    axios.put(`http://localhost:3080/counters/${id}`,{value})
+    axios.put(`http://localhost:3080/counters/${id}`,{value, page: getState().productsPage.page, userId: getState().homePage.userId})
     .then((res) => {
       dispatch(setCounter(res.data,id));
     })
@@ -75,15 +96,14 @@ export const updateCounter = (id, value) => {
     });
   }
 }
-export const addToCard = (productId) => {
-  
+export const addToCard = (productId) => { 
   return (dispatch, getState) => {
     axios.post(`http://localhost:3080/carts`,{
       userId: getState().homePage.userId,
       productId
     })
     .then((res) => {
-      console.log(res.data)
+      dispatch(addTocart(productId, res.data));
     })
     .catch((err) => {
       throw new console.error(err);

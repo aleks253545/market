@@ -6,7 +6,26 @@ import cart from '../../../img/cartProd.png';
 import edit from '../../../img/editImg.png';
 
 function Product(props) {
-  let quantity = props.quantity;
+  let quantity = props.quantity,
+  counter;
+  const addToCart = () => {
+    props.onAddToCart(props.id)
+  }
+  if(props.quantity > 0) {
+    counter=(
+          <div className = {s.counter}> 
+          <button 
+          className = {s.btnCounter} 
+          onClick = {() => props.updateCounter(props.id,quantity-=1)}>-</button>
+          <span className = {s.counterInp} >{props.quantity}</span>
+          <button 
+          className = {s.btnCounter} 
+          onClick = {() => props.updateCounter(props.id,quantity+=1)}>
+          +</button>
+        </div>
+    )
+
+  }
     return (
     <div className = {s.product}>
       <img src = {image} className = {s.productImage} alt='image'></img>
@@ -14,22 +33,13 @@ function Product(props) {
         <h4 className = {s.productName}>{props.name}</h4>
         <span className = {s.productDescription}>{props.description}</span>
       </div>
-      <div className = {s.counter}> 
-        <button 
-        className = {s.btnCounter} 
-        onClick = {() => props.updateCounter(props.id,quantity-=1)}>-</button>
-        <span className = {s.counterInp} >{props.quantity}</span>
-        <button 
-        className = {s.btnCounter} 
-        onClick = {() => props.updateCounter(props.id,quantity+=1)}>
-        +</button>
-    </div>  
+      {counter}
       {props.owner === props.userId ?
         (<button className = {s.editBtn}>
           <img src = {edit}></img>
           Edit Product
         </button>):
-        (<button className = {s.addBtn} onClick = { () => props.onAddToCart(props.id)}>
+        (<button className = {s.addBtn} onClick = {addToCart}>
           <img src = {cart}></img>
           Add to cart
         </button>)

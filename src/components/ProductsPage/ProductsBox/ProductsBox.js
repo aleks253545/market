@@ -23,7 +23,7 @@ import throttle from '../../../any/throtle'
       <Product 
       id = {product.id} 
       name = {product.name}
-      owner = {product.user}
+      owner = {product.userId}
       userId = {props.userId}
       description = {product.description}
       key = {product.id}

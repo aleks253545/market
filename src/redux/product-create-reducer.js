@@ -59,7 +59,6 @@ let createProductReducer = (state = initialState, action)=>{
       }
     }
     case 'SET_IMAGE': {
-      console.log(action.image);
       return {
         ...state,
         image: action.image
@@ -95,10 +94,10 @@ let createProductReducer = (state = initialState, action)=>{
 
 export const crateProduct = () => {
   return (dispatch, getState)=>{
-    let user = getState().homePage.userId;
+    let userId = getState().homePage.userId;
     axios.post('http://localhost:3080/products',{
       ...getState().createPage,
-      user
+      userId
     })
     .then((res) => {
       dispatch(setReqStatus('success'));

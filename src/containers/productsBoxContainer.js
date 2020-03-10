@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import ProductsBox from '../components/ProductsPage/ProductsBox/ProductsBox'
 
 import { downloadProducts, updateCounter, addToCard} from '../redux/products-reducer';
-let mapStateToProps = (state) => {
-    console.log(state);
+let mapStateToProps = (state) => {  
     return{
         products: state.productsPage.products,
         userId: state.homePage.userId
