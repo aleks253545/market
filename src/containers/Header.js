@@ -1,7 +1,8 @@
 
 import { connect } from 'react-redux'
 
-import MainHeader from '../components/MainHeader/MainHeader'
+import MainHeader from '../components/MainHeader/MainHeader';
+import { logOut } from '../redux/home-reducer'
 
 let mapStateToProps = (state) => {
     return{
@@ -10,8 +11,10 @@ let mapStateToProps = (state) => {
 }
 let mapDispatchToProps=(dispath)=>{
     return{
-
+      onLogOut: () => {
+        dispath(logOut())
+      }
     }
 }
-const Header=connect(mapStateToProps,mapDispatchToProps)(MainHeader);
+const Header = connect(mapStateToProps,mapDispatchToProps)(MainHeader);
 export default Header;

@@ -16,7 +16,7 @@ function MainHeader(props) {
             </Link> 
             <div className = {s.signOut}>
               <img src = {user} className = {s.OutImg}></img>
-              <span className = {s.dropBlock}>Log Out</span>
+              <span className = {s.dropBlock} onClick = {()=> props.onLogOut()}>Log Out</span>
             </div> 
             <Link to = '/cart'>
               <img src = {cart}></img>

@@ -46,11 +46,16 @@
   border:none;
 }
 
-.addBtn,.editBtn{
+.addBtn, .editBtn, .rubbishBtn{
   margin: 1rem 2rem 1rem auto;
   @include button(12rem,3rem,0.8rem);
-  img{
-    margin-right:10px;
-    color:white;
+  img {
+    margin-right: 10px;
+    color: white;
   }
+}
+.rubbishBtn{
+  background-color: transparent;
+  border: 2px solid $primary-color;
+  color:$primary-color;
 }

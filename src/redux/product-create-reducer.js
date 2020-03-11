@@ -59,9 +59,11 @@ let createProductReducer = (state = initialState, action)=>{
       }
     }
     case 'SET_IMAGE': {
+      let formData = new FormData();
+      formData.append('file',action.image);
       return {
         ...state,
-        image: action.image
+        image: formData
       }
     }
     case 'CHANGE_QUANTITY': {
@@ -91,13 +93,18 @@ let createProductReducer = (state = initialState, action)=>{
     }
   }
 }
+var config = {
+  onUploadProgress: function(progressEvent) {
+    var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+  }
+};
 
 export const crateProduct = () => {
   return (dispatch, getState)=>{
     let userId = getState().homePage.userId;
     axios.post('http://localhost:3080/products',{
       ...getState().createPage,
-      userId
+      userId,
     })
     .then((res) => {
       dispatch(setReqStatus('success'));

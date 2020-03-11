@@ -75,7 +75,6 @@ export const checkCookie = () => {
     return async (dispatch) => { 
       let  login = await  cookie.load('login'),
       password = await cookie.load('password') ;
-      console.log(password, password);
       axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
       .then((res) => {
         dispatch(signInUser(res.data));

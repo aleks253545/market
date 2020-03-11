@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const initialState = { cartProducts:[], page :'cart'};
 const SET_CART_PRODUCTS = 'SET_CART_PRODUCTS',
-SET_CART_COUNTER = 'SET_CART_COUNTER';
+SET_CART_COUNTER = 'SET_CART_COUNTER',
+UPDATE_CART = 'UPDATE_CART';
 
 export const setCartProducts = (cartProducts) => {
   return {
@@ -10,6 +10,8 @@ export const setCartProducts = (cartProducts) => {
     cartProducts
   }
 }
+
+
 export const setCartCounter = (value, id) => {
   return {
     type:SET_CART_COUNTER,
@@ -17,6 +19,8 @@ export const setCartCounter = (value, id) => {
     id
   }
 }
+
+const initialState = { cartProducts:[], page :'cart'};
 let cartReducer = (state = initialState, action ) => {
   switch(action.type) {   
     case 'SET_CART_PRODUCTS': {
@@ -27,12 +31,16 @@ let cartReducer = (state = initialState, action ) => {
     }
     case 'SET_CART_COUNTER': {
       let cartProducts = state.cartProducts.concat();
-      console.log(action.value)
       cartProducts.find((product) => product.id === action.id).quantity = action.value;
-      console.log(cartProducts);
       return {
         ...state,
         cartProducts: cartProducts
+      }
+    }
+    case 'UPDATE_CART': {
+      return { 
+        ...state,
+        cartProducts: action.cartProducts
       }
     }
     default : {
@@ -65,6 +73,28 @@ export const updateCartCounter = (id, value) => {
       throw new console.error(err);
       
     });
+  }
+}
+export const updateCart = (type) => {
+  return (dispatch, getState)=>{
+    axios.put(`http://localhost:3080/carts`,{userId: getState().homePage.userId,type})
+    .then((res) => {
+      dispatch(setCartProducts(res.data));
+    })
+    .catch((err) => {
+      throw new console.error(err);
+    });
+  }
+}
+export const deleteCartProduct = (productId) => {
+  return (dispatch, getState) => {
+    axios.delete(`http://localhost:3080/carts/${productId}`)
+    .then((res) => {
+      dispatch(setCartProducts(res.data));
+    })
+    .catch((err) => {
+      throw new console.error(err);
+    })
   }
 }
 

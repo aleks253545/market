@@ -45,7 +45,7 @@ function Previews(props) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
-      props.setImg(acceptedFiles);
+      props.setImg(document.getElementById('test').files[0]);
     }
   });
   const dropzoneRef = createRef();
@@ -77,7 +77,7 @@ function Previews(props) {
   return (
     <section className = {s.bragSection}>
       <div ref={dropzoneRef} {...getRootProps({className: 'dropzone'})}>
-        <input {...getInputProps()}  />
+        <input {...getInputProps()}  id='test'/>
         <img src = {prew} alt = ''></img>
         <span className = {s.zoneText}>Drag and drop an images, or click here</span>
         <div onClick={openDialog} className = {s.dialodBlock}>

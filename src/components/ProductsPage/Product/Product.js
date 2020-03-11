@@ -4,6 +4,7 @@ import s from './Product.module.scss';
 import image from '.././../../img/simpl.png';
 import cart from '../../../img/cartProd.png';
 import edit from '../../../img/editImg.png';
+import rubbish from '../../../img/rubbish.png';
 
 function Product(props) {
   let quantity = props.quantity,
@@ -38,6 +39,11 @@ function Product(props) {
         (<button className = {s.editBtn}>
           <img src = {edit}></img>
           Edit Product
+        </button>): 
+        props.inCart ?
+        (<button className = {s.rubbishBtn} onClick = {() => props.onDeleteCartProduct(props.cartId)}>
+          <img src = {rubbish}></img>
+          Delete
         </button>):
         (<button className = {s.addBtn} onClick = {addToCart}>
           <img src = {cart}></img>

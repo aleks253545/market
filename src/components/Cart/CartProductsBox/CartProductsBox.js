@@ -23,6 +23,9 @@ function CartProductsBox(props) {
       quantity = {product.quantity}
       updateCounter = {props.onUpdateCounter}
       onAddToCart = {props.onAddToCart}
+      inCart = {true}
+      onDeleteCartProduct = {props.onDeleteCartProduct}
+      cartId = {product.cartId}
       ></Product>
     )
   })
