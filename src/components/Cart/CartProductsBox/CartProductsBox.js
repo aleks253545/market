@@ -26,6 +26,7 @@ function CartProductsBox(props) {
       inCart = {true}
       onDeleteCartProduct = {props.onDeleteCartProduct}
       cartId = {product.cartId}
+      imgLink = {product.imgLink}
       ></Product>
     )
   })

@@ -45,7 +45,9 @@ function Previews(props) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
-      props.setImg(document.getElementById('test').files[0]);
+      props.setImg(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      }))[0]);
     }
   });
   const dropzoneRef = createRef();

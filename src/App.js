@@ -6,7 +6,7 @@ import HomePage from './components/HomePage/HomePage' ;
 import ProductsPage from './components/ProductsPage/ProductsPage';
 import CreateProductBox from './components/CreateProductBox/CreateProductBox';
 import CartContainer from './containers/CartContainer';
-import EditProductBox from './components/EditProductBox/EditProductBox';
+import EditProductContainer from './containers/EditProductContainer'
 import { BrowserRouter, Route, Redirect} from 'react-router-dom';
 import Header from './containers/Header';
 
@@ -20,6 +20,7 @@ function App() {
         <Route path='/home' component={HomePage}/>
         <Route path='/products' component={ProductsPage}/>
         <Route path='/create-product' component={CreateProductBox}/>
+        <Route path='/edit-product/:id' component={EditProductContainer}/>
         <Route path='/cart' component={CartContainer}/>
       </BrowserRouter>
     </div>

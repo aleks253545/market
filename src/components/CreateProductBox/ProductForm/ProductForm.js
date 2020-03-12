@@ -4,11 +4,14 @@ import DragAndDrop from '../../../containers/DragAndDrop';
 import {Link, Redirect} from 'react-router-dom';
 
 function ProductForm(props) {
+  // if(props.match.params.id){
+  //   props.downloadProduct(props.match.params.id);
+  // }
   let nameRef = React.createRef();
   let descRef = React.createRef();
   let counter = props.quantity ;
   useEffect(() => {
-    return props.onClose()
+    return () => props.onClose();
   }, [])
   const changeName = () => {
     props.onChangeName(nameRef.current.value);

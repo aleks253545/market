@@ -3,7 +3,6 @@ import React from 'react';
 import s from './ProductsBox.module.scss';
 import Product from '../Product/Product';
 import { useEffect } from 'react';
-import throttle from '../../../any/throtle'
 
  function ProductsBox(props) {
 
@@ -20,12 +19,12 @@ import throttle from '../../../any/throtle'
     },2000);
     return () => {
       props.onDestroyBox();
+      clearInterval(interval);
     }
   },[])  
-  let products ;
-  if(props.prodFilter === 'All' ){
-     products = props.products.map((product) => {
-        const prod = <Product 
+
+  let products = props.products.map((product) => {
+      const prod = <Product 
           id = {product.id} 
           name = {product.name}
           owner = {product.userId}
@@ -35,11 +34,11 @@ import throttle from '../../../any/throtle'
           quantity = {product.quantity}
           updateCounter = {props.onUpdateCounter}
           onAddToCart = {props.onAddToCart}
+          imgLink = {product.imgLink}
         ></Product>
-      return   props.prodFilter === 'All'? prod: props.prodFilter ==='My'? product.userId === props.userId? prod : '' : '';
-      
-    })
-  }
+    return   props.prodFilter === 'All'? prod: props.prodFilter ==='My'? product.userId === props.userId? prod : '' : '';
+  })
+
   return (
     <section className = {s.productsBox} >
       {products}

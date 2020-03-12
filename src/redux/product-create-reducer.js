@@ -59,11 +59,9 @@ let createProductReducer = (state = initialState, action)=>{
       }
     }
     case 'SET_IMAGE': {
-      let formData = new FormData();
-      formData.append('file',action.image);
       return {
         ...state,
-        image: formData
+        image: action.image
       }
     }
     case 'CHANGE_QUANTITY': {
@@ -101,14 +99,30 @@ var config = {
 
 export const crateProduct = () => {
   return (dispatch, getState)=>{
-    let userId = getState().homePage.userId;
-    axios.post('http://localhost:3080/products',{
-      ...getState().createPage,
-      userId,
-    })
+    let formData = new FormData();
+    formData.append('image',getState().createPage.image);
+    formData.append('userId',getState().homePage.userId);
+    formData.append('name',getState().createPage.name);
+    formData.append('description',getState().createPage.description);
+    formData.append('quantity',getState().createPage.quantity);
+    formData.append('imgPath',getState().createPage.image.path);
+    console.log(getState().createPage.image)
+    axios.post('http://localhost:3080/products',formData)
     .then((res) => {
       dispatch(setReqStatus('success'));
       dispatch(close());
+    })
+    .catch((err) => {
+      dispatch(setReqStatus('error'))
+    });
+  }
+}
+
+export const daownloadProduct = (id) => {
+  return (dispatch, getState)=>{
+    axios.post(`http://localhost:3080/products/${id}`)
+    .then((res) => {
+      console.log('dsd');
     })
     .catch((err) => {
       dispatch(setReqStatus('error'))

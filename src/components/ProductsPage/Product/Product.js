@@ -5,6 +5,7 @@ import image from '.././../../img/simpl.png';
 import cart from '../../../img/cartProd.png';
 import edit from '../../../img/editImg.png';
 import rubbish from '../../../img/rubbish.png';
+import { Link } from 'react-router-dom';
 
 function Product(props) {
   let quantity = props.quantity,
@@ -29,17 +30,17 @@ function Product(props) {
   }
     return (
     <div className = {s.product}>
-      <img src = {image} className = {s.productImage} alt='image'></img>
+      <img src = {props.imgLink} className = {s.productImage} alt='image'></img>
       <div className = {s.infoBlock}>
         <h4 className = {s.productName}>{props.name}</h4>
         <span className = {s.productDescription}>{props.description}</span>
       </div>
       {counter}
       {props.owner === props.userId ?
-        (<button className = {s.editBtn}>
-          <img src = {edit}></img>
-          Edit Product
-        </button>): 
+        (<Link className = {s.editBtn} to={`/edit-product/${props.id}`} RouteParams={{ id: props.id }}>
+          <img src = {edit} />
+            edit
+          </Link>): 
         props.inCart ?
         (<button className = {s.rubbishBtn} onClick = {() => props.onDeleteCartProduct(props.cartId)}>
           <img src = {rubbish}></img>

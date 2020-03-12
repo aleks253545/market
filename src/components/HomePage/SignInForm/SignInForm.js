@@ -33,7 +33,6 @@ function SignInForm(props) {
 
   useEffect(() => {
     props.checkCookie();
-    console.log(mail);
     return () => {
       props.changePass('');
       props.changeLog('');
@@ -56,7 +55,7 @@ function SignInForm(props) {
           onChange = {changeLogin} 
           value = {props.login}
         />
-        <img src={image} className = {s.validateImg}></img>
+        <img src={image} className = {s.validateImg} alt = 'img'></img>
         </div>
         <label >password</label>
         <input 
