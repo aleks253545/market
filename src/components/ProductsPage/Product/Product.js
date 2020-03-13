@@ -28,6 +28,7 @@ function Product(props) {
     )
 
   }
+  console.log(props.owner,props.userId);
     return (
     <div className = {s.product}>
       <img src = {props.imgLink} className = {s.productImage} alt='image'></img>

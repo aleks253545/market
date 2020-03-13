@@ -120,9 +120,9 @@ export const crateProduct = () => {
 
 export const daownloadProduct = (id) => {
   return (dispatch, getState)=>{
-    axios.post(`http://localhost:3080/products/${id}`)
+    axios.get(`http://localhost:3080/products/${id}`)
     .then((res) => {
-      console.log('dsd');
+      console.log(res.data);
     })
     .catch((err) => {
       dispatch(setReqStatus('error'))

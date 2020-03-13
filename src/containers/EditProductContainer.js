@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import ProductForm from '../components/CreateProductBox/ProductForm/ProductForm'
+import EditProductForm from '../components/EditProductBox/ProductForm/EditProductForm'
 import {changeName,changeDescription, changeQuantity, close, crateProduct, daownloadProduct} from '../redux/product-create-reducer';
 
 let mapStateToProps = (state) => {
@@ -33,5 +33,5 @@ let mapDispatchToProps=(dispath)=>{
       }
     } 
 }
-const EditProductContainer = connect(mapStateToProps, mapDispatchToProps)(ProductForm);
+const EditProductContainer = connect(mapStateToProps, mapDispatchToProps)(EditProductForm);
 export default EditProductContainer;
