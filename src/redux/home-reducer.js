@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cookie from 'react-cookies';
+import ProductsPage from '../components/ProductsPage/ProductsPage';
 const CHANGE_LOGIN = 'CHANGE_LOGIN',
 CHANGE_PASSWORD='CHANGE_PASSWORD',
 SIGN_IN_USER='SIGN_IN_USER',
@@ -75,13 +76,14 @@ export const checkCookie = () => {
     return async (dispatch) => { 
       let  login = await  cookie.load('login'),
       password = await cookie.load('password') ;
-      axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
-      .then((res) => {
-        dispatch(signInUser(res.data));
-      })
-      .catch((err) => console.log(err));
-    }
-  
+      if( login && password){
+        axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
+        .then((res) => {
+          dispatch(signInUser(res.data));
+        })
+        .catch((err) => console.log(err));
+        }
+      }  
 }
 export const SigUpUser = (login,password) => {
   return (dispatch)=>{

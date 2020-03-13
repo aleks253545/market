@@ -28,7 +28,6 @@ function Product(props) {
     )
 
   }
-  console.log(props.owner,props.userId);
     return (
     <div className = {s.product}>
       <img src = {props.imgLink} className = {s.productImage} alt='image'></img>
@@ -38,7 +37,7 @@ function Product(props) {
       </div>
       {counter}
       {props.owner === props.userId ?
-        (<Link className = {s.editBtn} to={`/edit-product/${props.id}`} RouteParams={{ id: props.id }}>
+        (<Link className = {s.editBtn} to={`/edit-product/${props.id}`} reouteparams={{ id: props.id }}>
           <img src = {edit} />
             edit
           </Link>): 

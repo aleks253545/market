@@ -29,7 +29,7 @@ function ProductForm(props) {
     
       <div className = {s.productForm}>
         <div className = {s.leftSite}>
-          <label for='titleInp' className = {s.subtitle}>Title</label>
+          <label  className = {s.subtitle}>Title</label>
           <input id='titleInp' 
             type='text' 
             className = {s.title} 
@@ -37,7 +37,7 @@ function ProductForm(props) {
             onChange = {changeName} 
             value = {props.name}>
           </input>
-          <label for='titleArea' className = {s.subtitle} >Title</label>
+          <label  className = {s.subtitle} >Title</label>
           <textarea id='titleArea' 
             type='text' 
             className = {s.descriptionArea} 

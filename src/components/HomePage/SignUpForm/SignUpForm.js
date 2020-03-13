@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import success from '../../../img/success.png';
 import error from '../../../img/error.png';
@@ -6,6 +6,7 @@ import s from './SignUpForm.module.scss';
 import { Redirect } from 'react-router-dom';
 
 function SignUpForm(props) {
+  const [status, setStatus] = useState('success');
   let logRef = React.createRef();
   let pasRef = React.createRef();
   let regexp = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i,
@@ -15,12 +16,10 @@ function SignUpForm(props) {
     if(mail){
       image = success;
       statusClassName = s.successEmail;
-    }else {
-      image = error;
-      statusClassName = s.errorEmail;
     }
   const changeLogin = () => {
     props.changeLog(logRef.current.value);
+    setStatus('');
   }
 
   const changePassword = () => {
@@ -30,10 +29,14 @@ function SignUpForm(props) {
   const signUpUser = () => {
     if(mail){
       props.signUp(props.login,props.password);
-    }
-    
+    }else { 
+      setStatus('error')
+    } 
   }
- 
+  if( status === 'error'){
+    image = error;
+    statusClassName = s.errorEmail;
+  }
   useEffect(() => {
     return () => {
       props.changePass('');

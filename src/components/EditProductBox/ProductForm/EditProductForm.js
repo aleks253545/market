@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import s from './ProductForm.module.scss';
-import DragAndDrop from '../../../containers/DragAndDrop';
+// import DragAndDrop from '../../../containers/DragAndDrop';
+import Previews from './DragAndDrop/Previews'
 import {Link, Redirect} from 'react-router-dom';
 
 function EditProductForm(props) {
-  if(props.match.params.id){
-    props.downloadProduct(props.match.params.id);
-  }
+
   let nameRef = React.createRef();
   let descRef = React.createRef();
   let counter = props.quantity ;
   useEffect(() => {
+    if(props.id){
+      props.downloadProduct(props.id);
+    }
     return () => props.onClose();
   }, [])
   const changeName = () => {
@@ -19,8 +21,8 @@ function EditProductForm(props) {
   const changeDescription = () => {
     props.onChangeDescription(descRef.current.value);
   }
-  const createProduct = () => {
-    props.onCreateProduct();
+  const editProduct = () => {
+    props.oneditProduct();
   }
   if(props.reqStatus === 'success'){
     return <Redirect to={'/products'}></Redirect>
@@ -29,7 +31,7 @@ function EditProductForm(props) {
     
       <div className = {s.productForm}>
         <div className = {s.leftSite}>
-          <label for='titleInp' className = {s.subtitle}>Title</label>
+          <label  className = {s.subtitle}>Title</label>
           <input id='titleInp' 
             type='text' 
             className = {s.title} 
@@ -37,7 +39,7 @@ function EditProductForm(props) {
             onChange = {changeName} 
             value = {props.name}>
           </input>
-          <label for='titleArea' className = {s.subtitle} >Title</label>
+          <label className = {s.subtitle} >Title</label>
           <textarea id='titleArea' 
             type='text' 
             className = {s.descriptionArea} 
@@ -59,13 +61,13 @@ function EditProductForm(props) {
             >+</button>
           </div>
           <div className = {s.buttonsBlock}>
-            <button className = {s.addBtn} onClick= {createProduct}>Add</button>
+            <button className = {s.addBtn} onClick= {editProduct}>Edit</button>
             <Link to = '/products' className = {s.closeBtn}>Close</Link>
           </div> 
         </div>
         <div className = {s.rightSite}>
           <h3 className = {s.subtitle} >Image</h3>
-          <DragAndDrop></DragAndDrop>
+          <Previews imgPath ={props.imgPath} setImage = {props.setImage}></Previews>
         </div>
         
       </div>

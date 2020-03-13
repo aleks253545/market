@@ -12,7 +12,10 @@ function ProductsMenu(props) {
       </div>
       {props.authorized?(
       <nav className = {s.navMenu}>
-        <a className = {s.menuTabs} onClick={ () => props.onChangeFilter('All')}>All Products</a>
+        <a className = {s.menuTabs} onClick={ (event) => {
+          props.onChangeFilter('All');
+          console.log(event.target);
+        }}>All Products</a>
         <a className = {s.menuTabs} onClick={ () => props.onChangeFilter('My')}>My Products</a>
       </nav>):''}
     </div>

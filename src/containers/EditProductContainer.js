@@ -1,14 +1,15 @@
 import { connect } from 'react-redux'
 
 import EditProductForm from '../components/EditProductBox/ProductForm/EditProductForm'
-import {changeName,changeDescription, changeQuantity, close, crateProduct, daownloadProduct} from '../redux/product-create-reducer';
+import {changeName,changeDescription, changeQuantity, close, editProduct, daownloadProduct, setImage} from '../redux/product-create-reducer';
 
 let mapStateToProps = (state) => {
     return{
       name:state.createPage.name,
       description: state.createPage.description,
       quantity: state.createPage.quantity,
-      reqStatus: state.createPage.reqStatus
+      reqStatus: state.createPage.reqStatus,
+      imgPath: state.createPage.imgLink
     }
 }
 let mapDispatchToProps=(dispath)=>{
@@ -25,11 +26,14 @@ let mapDispatchToProps=(dispath)=>{
       onClose: () => {
         dispath(close());
       },
-      onCreateProduct: () => {
-        dispath(crateProduct());
+      oneditProduct: () => {
+        dispath(editProduct());
       },
       downloadProduct: (id) => {
         dispath(daownloadProduct(id))
+      },
+      setImage: (img) => {
+        dispath(setImage(img))
       }
     } 
 }

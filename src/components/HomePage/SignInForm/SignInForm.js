@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect ,useState} from 'react'
 
 import s from './SignInForm.module.scss';
 import success from '../../../img/success.png';
@@ -6,6 +6,8 @@ import error from '../../../img/error.png';
 import { Redirect } from 'react-router-dom';
 
 function SignInForm(props) {
+  const [status, setStatus] = useState('success');
+
   let logRef = React.createRef();
   let pasRef = React.createRef();
   let regexp = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i,
@@ -15,12 +17,10 @@ function SignInForm(props) {
   if(mail){
     image = success;
     statusClassName = s.successEmail;
-  }else {
-    image = error;
-    statusClassName = s.errorEmail;
   }
   const changeLogin = () => {
     props.changeLog(logRef.current.value);
+    setStatus('');
   }
   const changePassword = () => {
     props.changePass(pasRef.current.value);
@@ -28,9 +28,14 @@ function SignInForm(props) {
   const signInUser = () => {
     if(mail){
       props.signIn(props.login,props.password);
+    }else { 
+        setStatus('error')
     }
   }
-
+  if( status === 'error'){
+    image = error;
+    statusClassName = s.errorEmail;
+  }
   useEffect(() => {
     props.checkCookie();
     return () => {

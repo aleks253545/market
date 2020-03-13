@@ -3,26 +3,27 @@ import React from 'react';
 import s from './ProductsBox.module.scss';
 import Product from '../Product/Product';
 import { useEffect } from 'react';
+import throttle from '../../../any/throtle';
 
  function ProductsBox(props) {
-
+  const onScroll =  () => {
+    let scrollHeight=document.documentElement.scrollHeight,
+      clientHeight=document.documentElement.clientHeight;
+      if(scrollHeight < clientHeight + window.pageYOffset + 30 && props.products.length) {
+        props.onDownloadRepos();
+      }
+  }
   useEffect(() => {
     if(!props.products.length){
       props.onDownloadRepos();
     } 
-    const interval = setInterval(() => {
-      let scrollHeight=document.documentElement.scrollHeight,
-      clientHeight=document.documentElement.clientHeight;
-      if(scrollHeight < clientHeight + window.pageYOffset + 10 && props.products.length) {
-        props.onDownloadRepos();
-      }
-    },2000);
+    window.addEventListener('scroll',throttle(onScroll,1000));
     return () => {
       props.onDestroyBox();
-      clearInterval(interval);
+
     }
   },[])  
-
+  
   let products = props.products.map((product) => {
       const prod = <Product 
           id = {product.id} 
