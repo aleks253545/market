@@ -51,7 +51,12 @@ let cartReducer = (state = initialState, action ) => {
 
 export const downloadProductsOnCart = () => {
   return (dispatch, getState)=>{
-    axios.get(`http://localhost:3080/carts?userId=${getState().homePage.userId}`)
+    axios.get(`http://localhost:3080/carts`, {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       if(res.data.length > 0){
         dispatch(setCartProducts(res.data));
@@ -65,7 +70,17 @@ export const downloadProductsOnCart = () => {
 
 export const updateCartCounter = (id, value) => {
   return (dispatch, getState)=>{
-    axios.put(`http://localhost:3080/counters/${id}`,{value, page: getState().cartPage.page, userId: getState().homePage.userId})
+    console.log(value);
+    axios.put(`http://localhost:3080/counters/${id}`,{
+      value, 
+      page: getState().cartPage.page
+    },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setCartCounter(res.data,id));
     })
@@ -77,7 +92,15 @@ export const updateCartCounter = (id, value) => {
 }
 export const updateCart = (type) => {
   return (dispatch, getState)=>{
-    axios.put(`http://localhost:3080/carts`,{userId: getState().homePage.userId,type})
+    axios.put(`http://localhost:3080/carts`,{
+      type
+    },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setCartProducts(res.data));
     })
@@ -88,7 +111,12 @@ export const updateCart = (type) => {
 }
 export const deleteCartProduct = (productId) => {
   return (dispatch, getState) => {
-    axios.delete(`http://localhost:3080/carts/${productId}`)
+    axios.delete(`http://localhost:3080/carts/${productId}`,{
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setCartProducts(res.data));
     })

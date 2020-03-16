@@ -111,7 +111,16 @@ export const downloadProducts = () => {
 
 export const updateCounter = (id, value, status) => {
   return (dispatch, getState)=>{
-    axios.put(`http://localhost:3080/counters/${id}`,{value, page: getState().productsPage.page, userId: getState().homePage.userId})
+    axios.put(`http://localhost:3080/counters/${id}`, {
+      value, 
+      page: getState().productsPage.page, 
+    },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setCounter(res.data,id));
     })
@@ -124,8 +133,13 @@ export const updateCounter = (id, value, status) => {
 export const addToCard = (productId) => { 
   return (dispatch, getState) => {
     axios.post(`http://localhost:3080/carts`,{
-      userId: getState().homePage.userId,
       productId
+    },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
     })
     .then((res) => {
       dispatch(addTocart(productId, res.data));

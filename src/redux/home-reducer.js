@@ -1,10 +1,11 @@
 import axios from 'axios';
 import cookie from 'react-cookies';
-import ProductsPage from '../components/ProductsPage/ProductsPage';
+import { act } from 'react-dom/test-utils';
 const CHANGE_LOGIN = 'CHANGE_LOGIN',
 CHANGE_PASSWORD='CHANGE_PASSWORD',
 SIGN_IN_USER='SIGN_IN_USER',
-LOG_OUT = 'LOG_OUT';
+LOG_OUT = 'LOG_OUT',
+SAVE_TOKEN = 'SAVE_TOKEN';
 
 
 export const changeLogin=(login)=>({
@@ -18,45 +19,59 @@ export const changePassword=(password)=>({
   password
 });
 
-export const signInUser=(id)=>({
+export const signInUser=(data)=>({
   type:SIGN_IN_USER,
-  id
+  userId: data.userId
 });
 export const logOutAC=()=>({
-  type:'LOG_OUT',
+  type:LOG_OUT,
+});
+export const saveToken=(token)=>({
+  type:SAVE_TOKEN,
+  token
 });
 
 
 
 
 
-let initialState={ login:'', password:'', authorized: false,userId:null };
+let initialState={ login:'',
+ password:'', 
+ authorized: false,
+ userId:null,
+ token:'' 
+};
 let homeReducer=(state=initialState,action)=>{
   switch(action.type){
-    case 'CHANGE_LOGIN': {
+    case CHANGE_LOGIN: {
       return {
         ...state,
         login: action.login
       }
     }
-    case 'CHANGE_PASSWORD': {
+    case CHANGE_PASSWORD: {
       return {
         ...state,
         password: action.password
       }
     }
-    case 'SIGN_IN_USER': {
+    case SIGN_IN_USER: {
+      console.log(action);
       return {
         ...state,
         authorized:true,
-        userId:action.id
+        userId:action.userId
       }
     }
-    case 'LOG_OUT': {
+    case LOG_OUT: {
       return {
+        ...initialState
+      }
+    }
+    case SAVE_TOKEN: {
+      return { 
         ...state,
-        userId: null,
-        authorized: false
+        token: action.token
       }
     }
     default:{
@@ -64,27 +79,52 @@ let homeReducer=(state=initialState,action)=>{
     }
   }
 }
+
 export const logOut = () => {
   return (dispatch) => {
-      cookie.save('login', '', { path:'' });
-    cookie.save('password', '', { path:'' });
+    cookie.save('token', '', { path:'' });
     dispatch(logOutAC())
   }
 
 }
-export const checkCookie = () => {
-    return async (dispatch) => { 
-      let  login = await  cookie.load('login'),
-      password = await cookie.load('password') ;
-      if( login && password){
-        axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
-        .then((res) => {
-          dispatch(signInUser(res.data));
-        })
-        .catch((err) => console.log(err));
+
+export const SigInUser = (login,password) => {  
+  return (dispatch)=>{
+    axios.post(`http://localhost:3080/users/auth`,{username:login,password})
+    .then((res) => {
+      cookie.save('token', `${res.data.access_token}`, { path:'' });
+      dispatch(saveToken(res.data.access_token));
+      axios.get('http://localhost:3080/users', {
+        headers: {
+          'Authorization': 'Bearer ' + res.data.access_token,
+          'Content-Type': 'application/json'
         }
+      }).then(res => {
+        dispatch(signInUser(res.data));
+      })     
+    })
+    .catch((err) => console.log(err));
+  }
+}
+
+export const checkCookie = () => {
+      return async (dispatch) => { 
+        let  token = await  cookie.load('token');
+        if (token) {
+          axios.get('http://localhost:3080/users', {
+            headers: {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json'
+            }
+          }).then(res => {
+              dispatch(signInUser(res.data));
+          })     
+          .catch((err) => console.log(err));
+        }
+        
       }  
 }
+
 export const SigUpUser = (login,password) => {
   return (dispatch)=>{
     axios.post('http://localhost:3080/users',{
@@ -92,23 +132,12 @@ export const SigUpUser = (login,password) => {
       password
     })
     .then((res) => {
-      dispatch(signInUser(res.data.id));
+      dispatch(SigInUser(login,password));
     })
     .catch((err) => console.log(err));
   }
 }
 
-export const SigInUser = (login,password) => {
-  return (dispatch)=>{
-    axios.get(`http://localhost:3080/users?login=${login}&password=${password}`)
-    .then((res) => {
-      cookie.save('login', `${login}`, { path:'' });
-      cookie.save('password', `${password}`, { path:'' });
-      dispatch(signInUser(res.data));
 
-    })
-    .catch((err) => console.log(err));
-  }
-}
 
 export default homeReducer;

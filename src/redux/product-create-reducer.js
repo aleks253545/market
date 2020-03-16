@@ -120,11 +120,16 @@ export const crateProduct = () => {
       formData.append('image',getState().createPage.image);
       formData.append('imgPath',getState().createPage.image.path);
     }
-    formData.append('userId',getState().homePage.userId);
     formData.append('name',getState().createPage.name);
     formData.append('description',getState().createPage.description);
     formData.append('quantity',getState().createPage.quantity);
-    axios.post('http://localhost:3080/products',formData)
+    axios.post('http://localhost:3080/products',formData,
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setReqStatus('success'));
       dispatch(close());
@@ -158,7 +163,14 @@ export const editProduct = () => {
     formData.append('description',getState().createPage.description);
     formData.append('quantity',getState().createPage.quantity);
 
-    axios.put(`http://localhost:3080/products/${getState().createPage.id}`,formData)
+    axios.put(`http://localhost:3080/products/${getState().createPage.id}`,
+    formData,
+    {
+      headers: {
+        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       dispatch(setReqStatus('success'));
       dispatch(close());
