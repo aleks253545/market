@@ -1,13 +1,6 @@
 import axios from 'axios';
-import { act } from 'react-dom/test-utils';
 
-const CHANGE_NAME = 'CHANGE_NAME',
-CHANGE_DESCRIPTION = 'CHANGE_DESCRIPTION',
-SET_IMAGE = 'SET_IMAGE',
-CHANGE_QUANTITY = 'CHANGE_QUANTITY',
-CLOSE = 'CLOSE',
-SET_REQ = 'SET_REQ',
-SET_RES_DATA = 'SET_RES_DATA';
+import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA} from './constants';
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,

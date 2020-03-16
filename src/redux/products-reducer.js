@@ -1,10 +1,5 @@
 import axios from 'axios'
-
-const SET_PRODUCTS = 'SET_PRODUCTS',
-SET_COUNTER='SET_COUNTER',
-ADD_TO_CART='ADD_TO_CART',
-CLEAN_PRODUCTS=  'CLEAN_PRODUCTS',
-CHANGE_FILTER = 'CHANGE_FILTER';
+import { SET_PRODUCTS, SET_COUNTER, ADD_TO_CART, CLEAN_PRODUCTS, CHANGE_FILTER} from './constants';
 
  const setProducts = (products) => {
   return {
@@ -46,6 +41,7 @@ let initialState = {
   page: 'products',
   prodFilter: 'All'
 };
+
 let productsReducer = (state = initialState, action) => {
   switch(action.type) {   
     case 'SET_PRODUCTS': {

@@ -10,16 +10,17 @@ function SignInForm(props) {
 
   let logRef = React.createRef();
   let pasRef = React.createRef();
-  let regexp = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i,
+  let loginValidate = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i,
   image,
   statusClassName;
-  let mail = props.login.match(regexp);
+  let mail = props.login.match(loginValidate);
   if(mail){
     image = success;
     statusClassName = s.successEmail;
   }
-  const changeLogin = () => {
-    props.changeLog(logRef.current.value);
+  const changeLogin = (e) => {
+    console.log({'e': e.target.value, 'ref': logRef.current.value});
+    props.changeLog(e.target.value);
     setStatus('');
   }
   const changePassword = () => {
@@ -37,7 +38,6 @@ function SignInForm(props) {
     statusClassName = s.errorEmail;
   }
   useEffect(() => {
-    props.checkCookie();
     return () => {
       props.changePass('');
       props.changeLog('');
@@ -70,10 +70,11 @@ function SignInForm(props) {
           value = {props.password}
         >
         </input>
+        <button type='button' className = {s.submitBtn} onClick = {signInUser}>
+          <span>Sign In</span>
+        </button>
       </form>
-      <button type='submit' className = {s.submitBtn} onClick = {signInUser}>
-        <span>Sign In</span>
-      </button>
+
     </div>
   )
 }

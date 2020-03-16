@@ -1,8 +1,5 @@
 import axios from 'axios'
-
-const SET_CART_PRODUCTS = 'SET_CART_PRODUCTS',
-SET_CART_COUNTER = 'SET_CART_COUNTER',
-UPDATE_CART = 'UPDATE_CART';
+import { SET_CART_PRODUCTS, SET_CART_COUNTER, UPDATE_CART} from './constants';
 
 export const setCartProducts = (cartProducts) => {
   return {
@@ -23,13 +20,13 @@ export const setCartCounter = (value, id) => {
 const initialState = { cartProducts:[], page :'cart'};
 let cartReducer = (state = initialState, action ) => {
   switch(action.type) {   
-    case 'SET_CART_PRODUCTS': {
+    case SET_CART_PRODUCTS: {
       return {
         ...state,
         cartProducts: action.cartProducts
       }
     }
-    case 'SET_CART_COUNTER': {
+    case SET_CART_COUNTER: {
       let cartProducts = state.cartProducts.concat();
       cartProducts.find((product) => product.id === action.id).quantity = action.value;
       return {
@@ -37,7 +34,7 @@ let cartReducer = (state = initialState, action ) => {
         cartProducts: cartProducts
       }
     }
-    case 'UPDATE_CART': {
+    case UPDATE_CART: {
       return { 
         ...state,
         cartProducts: action.cartProducts

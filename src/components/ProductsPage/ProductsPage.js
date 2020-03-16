@@ -7,7 +7,7 @@ import ProductsMenuContainer from '../../containers/ProductMenuContainer';
 function ProductsPage() {
 
   return (
-    <main className = {s.productsBox}>
+    <main className = {s.productsBox} >
       <ProductsMenuContainer></ProductsMenuContainer>
       <ProductsBoxContainer></ProductsBoxContainer>
     </main>

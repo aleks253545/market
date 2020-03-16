@@ -2,8 +2,12 @@ import React from 'react';
 
 import s from './Cart.module.scss';
 import CartBoxContainer from '../../containers/CartBoxContainer';
+import { Redirect } from 'react-router';
 
 function Cart(props) {
+  if(!props.authorized) {
+    return <Redirect to={'/home'}></Redirect>
+  }
   return (
     <main className = {s.cart}>
       <div className = {s.wrapper}>

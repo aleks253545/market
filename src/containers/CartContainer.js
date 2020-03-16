@@ -6,6 +6,7 @@ import {updateCart} from '../redux/cart-reducer';
 
 let mapStateToProps = (state) => {
     return{
+      authorized: state.homePage.authorized
     }
 }
 let mapDispatchToProps=(dispath)=>{

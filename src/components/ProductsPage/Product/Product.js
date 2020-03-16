@@ -7,22 +7,37 @@ import edit from '../../../img/editImg.png';
 import rubbish from '../../../img/rubbish.png';
 import { Link } from 'react-router-dom';
 
-function Product(props) {
-  let quantity = props.quantity,
+function Product(
+  {
+    quantity,
+    id, 
+    userId, 
+    owner, 
+    updateCounter, 
+    imgLink, 
+    name, 
+    description, 
+    inCart, 
+    onDeleteCartProduct,
+    onAddToCart, 
+    cartId
+  }
+) {
+  let quantityComn = quantity,
   counter;
   const addToCart = () => {
-    props.onAddToCart(props.id)
+    onAddToCart(id)
   }
-  if(props.quantity > 0 && props.userId !== props.owner) {
+  if(quantityComn > 0 && userId !== owner) {
     counter=(
           <div className = {s.counter}> 
           <button 
           className = {s.btnCounter} 
-          onClick = {() => props.updateCounter(props.id,quantity-=1)}>-</button>
-          <span className = {s.counterInp} >{props.quantity}</span>
+          onClick = {() => updateCounter(id,quantityComn-=1)}>-</button>
+          <span className = {s.counterInp} >{quantityComn}</span>
           <button 
           className = {s.btnCounter} 
-          onClick = {() => props.updateCounter(props.id,quantity+=1)}>
+          onClick = {() => updateCounter(id,quantityComn+=1)}>
           +</button>
         </div>
     )
@@ -30,19 +45,19 @@ function Product(props) {
   }
     return (
     <div className = {s.product}>
-      <img src = {props.imgLink} className = {s.productImage} alt='image'></img>
+      <img src = {imgLink} className = {s.productImage} alt='image'></img>
       <div className = {s.infoBlock}>
-        <h4 className = {s.productName}>{props.name}</h4>
-        <span className = {s.productDescription}>{props.description}</span>
+        <h4 className = {s.productName}>{name}</h4>
+        <span className = {s.productDescription}>{description}</span>
       </div>
       {counter}
-      {props.owner === props.userId ?
-        (<Link className = {s.editBtn} to={`/edit-product/${props.id}`} reouteparams={{ id: props.id }}>
+      {owner === userId ?
+        (<Link className = {s.editBtn} to={`/edit-product/${id}`} reouteparams={{ id: id }}>
           <img src = {edit} />
             edit
           </Link>): 
-        props.inCart ?
-        (<button className = {s.rubbishBtn} onClick = {() => props.onDeleteCartProduct(props.cartId)}>
+        inCart ?
+        (<button className = {s.rubbishBtn} onClick = {() => onDeleteCartProduct(cartId)}>
           <img src = {rubbish}></img>
           Delete
         </button>):

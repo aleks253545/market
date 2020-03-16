@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import SignInForm from '../components/HomePage/SignInForm/SignInForm';
 
-import {changePassword, changeLogin, SigInUser, checkCookie} from '../redux/home-reducer';
+import {changePassword, changeLogin, SigInUser} from '../redux/home-reducer';
 let mapStateToProps = (state) => {
     return{
         login:state.homePage.login,
@@ -22,9 +22,6 @@ let mapDispatchToProps=(dispath)=>{
         signIn: (login,password) => {
             dispath(SigInUser(login,password));
         },
-        checkCookie : () => {
-            dispath(checkCookie());
-        }
     }
 }
 const SignIn=connect(mapStateToProps,mapDispatchToProps)(SignInForm);

@@ -14,7 +14,6 @@ function ProductsMenu(props) {
       <nav className = {s.navMenu}>
         <a className = {s.menuTabs} onClick={ (event) => {
           props.onChangeFilter('All');
-          console.log(event.target);
         }}>All Products</a>
         <a className = {s.menuTabs} onClick={ () => props.onChangeFilter('My')}>My Products</a>
       </nav>):''}

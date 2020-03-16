@@ -1,11 +1,8 @@
 import axios from 'axios';
 import cookie from 'react-cookies';
-import { act } from 'react-dom/test-utils';
-const CHANGE_LOGIN = 'CHANGE_LOGIN',
-CHANGE_PASSWORD='CHANGE_PASSWORD',
-SIGN_IN_USER='SIGN_IN_USER',
-LOG_OUT = 'LOG_OUT',
-SAVE_TOKEN = 'SAVE_TOKEN';
+
+import { CHANGE_LOGIN, CHANGE_PASSWORD, SIGN_IN_USER, LOG_OUT, SAVE_TOKEN} from './constants';
+
 
 
 export const changeLogin=(login)=>({
@@ -26,10 +23,12 @@ export const signInUser=(data)=>({
 export const logOutAC=()=>({
   type:LOG_OUT,
 });
-export const saveToken=(token)=>({
+export const saveToken=(token)=>{
+  localStorage.setItem('token', token);
+  return {
   type:SAVE_TOKEN,
   token
-});
+  }};
 
 
 
@@ -96,7 +95,7 @@ export const SigInUser = (login,password) => {
       dispatch(saveToken(res.data.access_token));
       axios.get('http://localhost:3080/users', {
         headers: {
-          'Authorization': 'Bearer ' + res.data.access_token,
+          'Authorization': 'Bearer ' + localStorage.get('token'),
           'Content-Type': 'application/json'
         }
       }).then(res => {
@@ -107,31 +106,16 @@ export const SigInUser = (login,password) => {
   }
 }
 
-export const checkCookie = () => {
-      return async (dispatch) => { 
-        let  token = await  cookie.load('token');
-        if (token) {
-          axios.get('http://localhost:3080/users', {
-            headers: {
-              'Authorization': 'Bearer ' + token,
-              'Content-Type': 'application/json'
-            }
-          }).then(res => {
-              dispatch(signInUser(res.data));
-          })     
-          .catch((err) => console.log(err));
-        }
-        
-      }  
-}
+
 
 export const SigUpUser = (login,password) => {
   return (dispatch)=>{
     axios.post('http://localhost:3080/users',{
-      login,
+      username: login,
       password
     })
     .then((res) => {
+      console.log(1);
       dispatch(SigInUser(login,password));
     })
     .catch((err) => console.log(err));

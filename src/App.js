@@ -13,7 +13,7 @@ import Header from './containers/Header';
 
 function App() {
   return (
-    <div className='wrapper'>
+    <div className='wrapper' >
       <BrowserRouter>
       <Header></Header>
         <Route path='/'> <Redirect to='/home'></Redirect></Route>
