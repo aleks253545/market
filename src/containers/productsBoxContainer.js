@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ProductsBox from '../components/ProductsPage/ProductsBox/ProductsBox'
 
-import { downloadProducts, updateCounter, addToCard, cleanProducts} from '../redux/products-reducer';
+import { downloadProducts, updateCounter, addToCard, cleanProducts} from '../redux/products/products-actions';
 let mapStateToProps = (state) => {  
     return{
         products: state.productsPage.products,

@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import Cart from '../components/Cart/Cart'
-import {updateCart} from '../redux/cart-reducer';
+import {updateCart} from '../redux/cart/cart-actions';
 
 let mapStateToProps = (state) => {
     return{

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import Previews from '../components/CreateProductBox/ProductForm/DragAndDrop/Previews';
 
-import {setImage} from '../redux/product-create-reducer';
+import {setImage} from '../redux/createProduct/product-create-actions';
 let mapStateToProps = (state) => {
     return{
         img:state.createPage.image

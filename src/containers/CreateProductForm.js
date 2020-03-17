@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import ProductForm from '../components/CreateProductBox/ProductForm/ProductForm'
-import {changeName,changeDescription, changeQuantity, close, crateProduct} from '../redux/product-create-reducer';
+import {changeName,changeDescription, changeQuantity, close, crateProduct} from '../redux/createProduct/product-create-actions';
 
 let mapStateToProps = (state) => {
     return{

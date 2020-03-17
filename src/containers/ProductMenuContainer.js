@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import ProductsMenu from '../components/ProductsPage/ProductsMenu/ProductsMenu';
-import {changeFilter} from '../redux/products-reducer';
+import {changeFilter} from '../redux/products/products-actions';
 
 let mapStateToProps = (state) => {
     return{

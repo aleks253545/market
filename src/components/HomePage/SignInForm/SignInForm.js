@@ -19,7 +19,6 @@ function SignInForm(props) {
     statusClassName = s.successEmail;
   }
   const changeLogin = (e) => {
-    console.log({'e': e.target.value, 'ref': logRef.current.value});
     props.changeLog(e.target.value);
     setStatus('');
   }
@@ -38,6 +37,7 @@ function SignInForm(props) {
     statusClassName = s.errorEmail;
   }
   useEffect(() => {
+    props.checkToken();
     return () => {
       props.changePass('');
       props.changeLog('');
@@ -50,7 +50,7 @@ function SignInForm(props) {
   return (
     <div className = {s.signBlock}>
       <h3 className= {s.title}>Sign In</h3>
-      <form className = {s.form}>
+      <div className = {s.form}>
         <label >Login</label>
         <div className = {s.backPanel}>
         <input 
@@ -70,10 +70,11 @@ function SignInForm(props) {
           value = {props.password}
         >
         </input>
-        <button type='button' className = {s.submitBtn} onClick = {signInUser}>
+
+      </div>
+      <button type='button' className = {s.submitBtn} onClick = {signInUser}>
           <span>Sign In</span>
         </button>
-      </form>
 
     </div>
   )

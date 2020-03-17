@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import SignUpForm from '../components/HomePage/SignUpForm/SignUpForm';
 
-import {changePassword, changeLogin, SigUpUser} from '../redux/home-reducer';
+import {changePassword, changeLogin, SigUpUser} from '../redux/home/home-actions';
 let mapStateToProps = (state) => {
     return{
         login:state.homePage.login,

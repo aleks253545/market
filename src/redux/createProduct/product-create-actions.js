@@ -1,12 +1,10 @@
 import axios from 'axios';
-
-import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA} from './constants';
+import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA} from '../constants';
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,
   name
 });
-
 
 export const changeDescription = (description) => ({
   type:CHANGE_DESCRIPTION,
@@ -22,85 +20,22 @@ export const setImage=(image)=>({
   type:SET_IMAGE,
   image
 });
+
 export const close = () => ({
   type:CLOSE
-})
+});
+
 export const setReqStatus = (status) => ({
   type: SET_REQ,
   status
-})
+});
+
 export const setResData = (data) => ({
   type: SET_RES_DATA,
   data
-})
+});
 
-
-
-let initialState = {
-  name: '', 
-  description: '', 
-  quantity: 1, 
-  image: null, 
-  reqStatus:'',
-  imgLink: '',
-  id:'',
-  userId:'',
-  imgPath:''
-};
-let createProductReducer = (state = initialState, action)=>{
-  switch(action.type){
-    case 'CHANGE_DESCRIPTION': {
-      return {
-        ...state,
-        description: action.description
-      }
-    }
-    case 'CHANGE_NAME': {
-      return {
-        ...state,
-        name: action.name
-      }
-    }
-    case 'SET_IMAGE': {
-      return {
-        ...state,
-        image: action.image
-      }
-    }
-    case 'CHANGE_QUANTITY': {
-      return {
-        ...state,
-        quantity: action.quantity
-      }
-    }
-    case 'CLOSE': {
-      return {
-        ...state,
-        quantity: 1, 
-        name: '',
-        description: '',
-        image: null,
-        reqStatus:''
-      }
-    }
-    case 'SET_REQ': {
-      return {
-        ...state,
-        reqStatus:action.status
-      }
-    }
-    case 'SET_RES_DATA': {
-      return {
-        ...state,
-        ...action.data
-      }
-    }
-    default: {
-      return state;
-    }
-  }
-}
-var config = {
+const config = {
   onUploadProgress: function(progressEvent) {
     var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
   }
@@ -173,5 +108,3 @@ export const editProduct = () => {
     });
   }
 }
-
-export default createProductReducer;

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import EditProductForm from '../components/EditProductBox/ProductForm/EditProductForm'
-import {changeName,changeDescription, changeQuantity, close, editProduct, daownloadProduct, setImage} from '../redux/product-create-reducer';
+import {changeName,changeDescription, changeQuantity, close, editProduct, daownloadProduct, setImage} from '../redux/createProduct/product-create-actions';
 
 let mapStateToProps = (state) => {
     return{
