@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import EditProductForm from '../components/EditProductBox/ProductForm/EditProductForm'
-import {changeName,changeDescription, changeQuantity, close, editProduct, daownloadProduct, setImage} from '../redux/createProduct/product-create-actions';
+import {changeName,changeDescription, changeQuantity, close, editProduct, downloadProduct, setImage} from '../redux/createProduct/product-create-actions';
 
 let mapStateToProps = (state) => {
     return{
@@ -30,7 +30,7 @@ let mapDispatchToProps=(dispath)=>{
         dispath(editProduct());
       },
       downloadProduct: (id) => {
-        dispath(daownloadProduct(id))
+        dispath(downloadProduct(id))
       },
       setImage: (img) => {
         dispath(setImage(img))

@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import MainHeader from '../components/MainHeader/MainHeader';
-import { logOut } from '../redux/home/home-actions'
+import { logOutAC } from '../redux/home/home-actions'
 
 let mapStateToProps = (state) => {
     return{
@@ -12,7 +12,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps=(dispath)=>{
     return{
       onLogOut: () => {
-        dispath(logOut())
+        dispath(logOutAC())
       }
     }
 }

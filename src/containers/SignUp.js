@@ -1,9 +1,8 @@
-
 import { connect } from 'react-redux'
 
 import SignUpForm from '../components/HomePage/SignUpForm/SignUpForm';
 
-import {changePassword, changeLogin, SigUpUser} from '../redux/home/home-actions';
+import {changePassword, changeLogin, signUp} from '../redux/home/home-actions';
 let mapStateToProps = (state) => {
     return{
         login:state.homePage.login,
@@ -20,7 +19,7 @@ let mapDispatchToProps=(dispath)=>{
             dispath(changePassword(password));
         },
         signUp: (login,password) => {
-            dispath(SigUpUser(login,password));
+            dispath(signUp(login,password));
         }
 
     }

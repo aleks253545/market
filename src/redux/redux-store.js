@@ -5,8 +5,7 @@ import homeReducer from './home/home-reducer';
 import createProductReducer from './createProduct/product-create-reducer';
 import productsReducer from './products/products-reducer';
 import cartReducer from './cart/cart-reducer';
-import homeSaga from './home/home-actions';
-import cartSaga from './cart/cart-actions';
+import rootSaga from './rootSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 let reducers=combineReducers({
@@ -15,7 +14,11 @@ let reducers=combineReducers({
   productsPage: productsReducer,
   cartPage: cartReducer
 });
-let store=createStore(reducers,  applyMiddleware(sagaMiddleware));
+let store = createStore(reducers,  applyMiddleware(sagaMiddleware));
 
-sagaMiddleware.run([homeSaga, cartSaga])
+const rootSagas = sagaMiddleware.run(rootSaga);
+rootSagas.toPromise().catch(error => {
+  // Error here is a fatal error.
+  // None of the sagas down the road caught it.
+});
 export default store; 

@@ -1,6 +1,6 @@
-import { SET_CART_PRODUCTS,SET_CART_COUNTER, DOWNLOAD_CART_PRODUCTS_SAGA, UPDATE_CART_COUNTER_SAGA, UPDATE_CART_SAGA, DELETE_CART_PRODUCT_CAGA} from '../constants';
+import { SET_CART_PRODUCTS,SET_CART_COUNTER, DOWNLOAD_CART_PRODUCTS_SAGA, UPDATE_CART_COUNTER_SAGA, UPDATE_CART_SAGA, DELETE_CART_PRODUCT_CAGA, DELTE_PRODUCT_FROM_CART} from '../constants';
 import axios from 'axios'
-import {takeEvery, call, put, select, all} from 'redux-saga';
+import {takeEvery, call, put, select, all} from 'redux-saga/effects';
 
 export const setCartProducts = (cartProducts) => {
   return {
@@ -8,6 +8,11 @@ export const setCartProducts = (cartProducts) => {
     cartProducts
   }
 }
+
+export const deleteProductFromCart = (productId) => ({
+  type: DELTE_PRODUCT_FROM_CART,
+  id: productId
+})
 
 export const setCartCounter = (value, id) => {
   return {
@@ -17,200 +22,114 @@ export const setCartCounter = (value, id) => {
   }
 }
 
-export const signUp = (login, password) => ({
+export const downloadCartProducts = (login, password) => ({
   type: DOWNLOAD_CART_PRODUCTS_SAGA,
   login,
   password
 });
 
-function* watchdownloadCartProductsSaga() {
-  yield takeEvery(DOWNLOAD_CART_PRODUCTS_SAGA, downloadCartProductsSaga);
-}
 function* downloadCartProductsSaga() {
   try {
-    const token = yield select(state => state.homePage.token);
-    const products = yield call(
+    const products = yield call(() =>
       axios.get(`http://localhost:3080/carts`, {
         headers: {
-          'Authorization': 'Bearer ' + token,
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         }
       })
     );
-    if(products.length > 0){
-      yield put(setCartProducts(products));
+    if(products.data.length > 0){
+      yield put(setCartProducts(products.data));
     }
   } catch(err) {
-    throw new console.error(err);
+    console.log(err);
   }
 
 }
-// export const downloadCartProductsSaga = () => {
-//   return (dispatch, getState)=>{
-//     axios.get(`http://localhost:3080/carts`, {
-//       headers: {
-//         'Authorization': 'Bearer ' + getState().homePage.token,
-//         'Content-Type': 'application/json'
-//       }
-//     })
-//     .then((res) => {
-//       if(res.data.length > 0){
-//         dispatch(setCartProducts(res.data));
-//       }
-//     })
-//     .catch((err) => {
-//       throw new console.error(err);
-//     });
-//   }
-// }
+
 export const updateCartCounter = (id, value) => ({
   type: UPDATE_CART_COUNTER_SAGA,
   id,
   value
 });
 
-function* watchupdateCartCounterSaga() {
-  yield takeEvery(UPDATE_CART_COUNTER_SAGA, updateCartCounterSaga);
-}
-
 function* updateCartCounterSaga ({id, value}) {
   try {
     const page = yield select(state => state.cartPage.page);
-    const token = yield select(state => state.homePage.token);
-    const count = yield call(
+    const count = yield call(() =>
       axios.put(`http://localhost:3080/counters/${id}`,{
         value, 
         page
       },
       {
         headers: {
-          'Authorization': 'Bearer ' + token,
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         }
       })
     );
-    yield put(setCartCounter(count,id));
+    yield put(setCartCounter(count.data,id));
   } catch (err) {
-    throw new console.error(err);
+    console.log(err);
   }
 
 }
-// export const updateCartCounterSaga = (id, value) => {
-//   return (dispatch, getState)=>{
-//     axios.put(`http://localhost:3080/counters/${id}`,{
-//       value, 
-//       page: getState().cartPage.page
-//     },
-//     {
-//       headers: {
-//         'Authorization': 'Bearer ' + getState().homePage.token,
-//         'Content-Type': 'application/json'
-//       }
-//     })
-//     .then((res) => {
-//       dispatch(setCartCounter(res.data,id));
-//     })
-//     .catch((err) => {
-//       throw new console.error(err);
-//     });
-//   }
-// }
+
+
 export const updateCart = (typeReq) => ({
   type: UPDATE_CART_SAGA,
   typeReq
 });
 
-function* watchupdateCartSaga() {
-  yield takeEvery(UPDATE_CART_SAGA, updateCartSaga);
-}
-
 function* updateCartSaga ({typeReq}) {
   try {
-    const token = yield select(state => state.homePage.token);
-    const products = yield call(
+    const products = yield call(() =>
       axios.put(`http://localhost:3080/carts`,{
         type: typeReq
       },
       {
         headers: {
-          'Authorization': 'Bearer ' + token,
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         }
       })
     );
-    yield put(setCartProducts(products));
+    yield put(setCartProducts(products.data));
   } catch(err) {
-    throw new console.error(err);
+    console.log(err);
   }
 
 }
-// export const updateCartSaga = ({typeReq}) => {
-//   return (dispatch, getState)=>{
-//     axios.put(`http://localhost:3080/carts`,{
-//       type: typeReq
-//     },
-//     {
-//       headers: {
-//         'Authorization': 'Bearer ' + getState().homePage.token,
-//         'Content-Type': 'application/json'
-//       }
-//     })
-//     .then((res) => {
-//       dispatch(setCartProducts(res.data));
-//     })
-//     .catch((err) => {
-//       throw new console.error(err);
-//     });
-//   }
-// }
-export const deleteCartProduct = (productId) => ({
+
+export const deleteCartProduct = (cartId) => ({
   type: DELETE_CART_PRODUCT_CAGA,
-  productId
+  cartId
 });
 
-function* watchdeleteCartProductSaga() {
-  yield takeEvery(UPDATE_CART_SAGA, deleteCartProductSaga);
-}
 
-function* deleteCartProductSaga ({productId}) {
+
+function* deleteCartProductSaga ({cartId}) {
   try {
-    const token = yield select(state => state.homePage.token);
-    const products = yield call(
-      axios.delete(`http://localhost:3080/carts/${productId}`,{
+    console.log(cartId ,'cartid')
+     const productId =yield call(() =>
+      axios.delete(`http://localhost:3080/carts/${cartId}`,{
       headers: {
-        'Authorization': 'Bearer ' + getState().homePage.token,
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json'
       }
       })
     )
-    put(setCartProducts(products));
+    console.log(productId ,'productId')
+    yield put(deleteProductFromCart(productId.data));
   } catch (err) {
-    throw new console.error(err)
+    console.log(err)
   }
 }
 
-
-export default function* cartSaga() {
-  yield all([
-    watchdeleteCartProductSaga(),
-    watchupdateCartSaga(),
-    watchupdateCartCounterSaga(),
-    watchdownloadCartProductsSaga()
-  ])
+export function* cartSaga () {
+  yield takeEvery(DELETE_CART_PRODUCT_CAGA, deleteCartProductSaga);
+  yield takeEvery(UPDATE_CART_SAGA, updateCartSaga);
+  yield takeEvery(DOWNLOAD_CART_PRODUCTS_SAGA, downloadCartProductsSaga);
+  yield takeEvery(UPDATE_CART_COUNTER_SAGA, updateCartCounterSaga);
 }
-// export const deleteCartProductSaga = (productId) => {
-//   return (dispatch, getState) => {
-//     axios.delete(`http://localhost:3080/carts/${productId}`,{
-//       headers: {
-//         'Authorization': 'Bearer ' + getState().homePage.token,
-//         'Content-Type': 'application/json'
-//       }
-//     })
-//     .then((res) => {
-//       dispatch(setCartProducts(res.data));
-//     })
-//     .catch((err) => {
-//       throw new console.error(err);
-//     })
-//   }
-// }
+

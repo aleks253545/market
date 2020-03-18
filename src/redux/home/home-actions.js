@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { put, takeEvery, call, all } from 'redux-saga/effects'
+import { put, takeEvery, call, select, takeLatest } from 'redux-saga/effects'
 import { CHANGE_LOGIN, CHANGE_PASSWORD, SIGN_IN_USER, LOG_OUT, SAVE_TOKEN, CHECK_TOKEN_SAGA, SIGN_IN_SAGA, SIGN_UP_SAGA } from '../constants';
 
 
@@ -39,14 +39,10 @@ export const checkToken = () => ({
   type: CHECK_TOKEN_SAGA 
 });
 
-function* watchCheckToken() {
-  yield takeEvery('CHECK_TOKEN_SAGA', checkTokenSaga);
-}
-
 function* checkTokenSaga() {
   try {
     if (localStorage.getItem('token')) {
-      const user = yield call(
+      const user = yield call(() => 
         axios.get('http://localhost:3080/users', {
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -57,7 +53,7 @@ function* checkTokenSaga() {
         yield put(signInUser(user))
     }
   } catch (err) {
-    throw new console.error(err);
+    console.log(err);
   }
 }
 
@@ -68,20 +64,16 @@ export const signIn = (login, password) => ({
   password
 });
 
-function* watchSignIn() {
-  yield takeEvery(SIGN_IN_SAGA, SigInUserSaga);
-}
-
 function* SigInUserSaga({login, password}) {
   try { 
-    const request = yield call(
+    const request = yield call(() =>
       axios.post(`http://localhost:3080/users/auth`,{
         username:login,
         password
       })
     );
-    yield put(saveToken(request.access_token));
-    const user = yield call(
+    yield put(saveToken(request.data.access_token));
+    const user = yield call(() =>
       axios.get('http://localhost:3080/users', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -89,29 +81,13 @@ function* SigInUserSaga({login, password}) {
         }
       })
     );
-    yield put(signInUser(user))
+    yield put(signInUser(user.data))
   } catch(err) {
-    throw new console.error(err);
+    console.log(err);
   }
 }
 
-// export const SigInUser = (login,password) => {  
-//   return (dispatch)=>{
-//     axios.post(`http://localhost:3080/users/auth`,{username:login,password})
-//     .then((res) => {
-//       dispatch(saveToken(res.data.access_token));
-//       axios.get('http://localhost:3080/users', {
-//         headers: {
-//           'Authorization': 'Bearer ' + localStorage.getItem('token'),
-//           'Content-Type': 'application/json'
-//         }
-//       }).then(res => {
-//         dispatch(signInUser(res.data));
-//       })     
-//     })
-//     .catch((err) => console.log(err));
-//   }
-// }
+
   
 export const signUp = (login, password) => ({
   type: SIGN_UP_SAGA,
@@ -119,41 +95,23 @@ export const signUp = (login, password) => ({
   password
 });
 
-function* watchSignUp() {
-  yield takeEvery(SIGN_UP_SAGA, SigUpUserSaga);
-} 
-
 function* SigUpUserSaga({login, password}) {
   try{
-    const user = yield call(
+    const user = yield call(() =>
       axios.post('http://localhost:3080/users',{
         username: login,
         password
       })
     );
-    yield put(signInUser(user))
+    yield put(signInUser(user.data))
   } catch (err) {
-    throw new console.error(err);
+    console.log(err);
   }
 
 }
 
-export default function* homeSaga() {
-  yield all([
-    watchSignUp(),
-    watchSignIn(),
-    watchCheckToken
-  ])
-}
-// export const SigUpUserSaga = (login,password) => {
-//   return (dispatch)=>{
-//     axios.post('http://localhost:3080/users',{
-//       username: login,
-//       password
-//     })
-//     .then((res) => {
-//       dispatch(signInUser(res.data));
-//     })
-//     .catch((err) => console.log(err));
-//   }
-// }
+export function* homeSaga() {
+  yield takeEvery(SIGN_UP_SAGA, SigUpUserSaga);
+  yield takeLatest(SIGN_IN_SAGA, SigInUserSaga);
+  // yield takeEvery(CHECK_TOKEN_SAGA, checkTokenSaga);
+} 

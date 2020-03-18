@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA} from '../constants';
+import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA, CREATE_PRODUCT_SAGA, DOWNLOAD_PRODUCT_SAGA, EDIT_PRODUCT_SAGA} from '../constants';
+import { put, call, all ,takeEvery, select} from 'redux-saga/effects';
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,
@@ -41,70 +42,101 @@ const config = {
   }
 };
 
-export const crateProduct = () => {
-  return (dispatch, getState)=>{
+export const crateProduct = () => ({
+  type: CREATE_PRODUCT_SAGA,
+});
+
+function* createPageSaga () {
+  try {
     let formData = new FormData();
-    if (getState().createPage.image) {
-      formData.append('image',getState().createPage.image);
-      formData.append('imgPath',getState().createPage.image.path);
+    const image = yield select( state => state.createPage.image);
+    if (image) {
+      formData.append('image',image);
+      let path = yield select( state => state.createPage.image.path);
+      formData.append('imgPath',path);
     }
-    formData.append('name',getState().createPage.name);
-    formData.append('description',getState().createPage.description);
-    formData.append('quantity',getState().createPage.quantity);
-    axios.post('http://localhost:3080/products',formData,
-    {
-      headers: {
-        'Authorization': 'Bearer ' + getState().homePage.token,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((res) => {
-      dispatch(setReqStatus('success'));
-      dispatch(close());
-    })
-    .catch((err) => {
-      dispatch(setReqStatus('error'))
-    });
+    let name = yield select( state => state.createPage.name)
+    formData.append('name',name);
+    let description = yield select( state => state.createPage.description)
+    formData.append('description',description);
+    let quantity = yield select( state => state.createPage.quantity)
+    formData.append('quantity',quantity);
+    yield call(() =>
+      axios.post('http://localhost:3080/products',formData,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        }
+      })
+    );
+    yield put(setReqStatus('success'));
+    yield put(close());
+  } catch(err) {
+    yield put(setReqStatus('error'))
   }
+
+} 
+
+
+export const downloadProduct = (id) => ({
+  type: DOWNLOAD_PRODUCT_SAGA,
+  id
+});
+
+function* downloadProductSaga({ id }) {
+  try {
+    let product = yield call( () =>
+      axios.get(`http://localhost:3080/products/${id}`)
+     );
+     yield put(setResData(product.data))
+  } catch(err) {
+    console.log(err);
+  }
+
+
 }
 
-export const daownloadProduct = (id) => {
-  return (dispatch, getState)=>{
-    axios.get(`http://localhost:3080/products/${id}`)
-    .then((res) => {
-      dispatch(setResData(res.data));
-    })
-    .catch((err) => {
-      dispatch(setReqStatus('error'))
-    });
-  }
-}
+export const editProduct = (id) => ({
+  type: EDIT_PRODUCT_SAGA,
+  id
+});
 
-export const editProduct = () => {
-  return (dispatch, getState)=>{
+function* editProductSaga () {
+  try {
     let formData = new FormData();
-    if (getState().createPage.image) {
-      formData.append('image',getState().createPage.image);
-      formData.append('imgPath',getState().createPage.image.path);
+    const image = yield select( state => state.createPage.image);
+    const productId = yield select( state => state.createPage.id);
+    if (image) {
+      formData.append('image',image);
+      const path = yield select( state => state.createPage.image.path);
+      formData.append('imgPath',path);
     }
-    formData.append('name',getState().createPage.name);
-    formData.append('description',getState().createPage.description);
-    formData.append('quantity',getState().createPage.quantity);
-
-    axios.put(`http://localhost:3080/products/${getState().createPage.id}`,
-    formData,
-    {
-      headers: {
-        'Authorization': 'Bearer ' + getState().homePage.token,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((res) => {
-      dispatch(setReqStatus('success'));
-      dispatch(close());
-    })
-    .catch((err) => {
-      dispatch(setReqStatus('error'))
-    });
+    const name = yield select( state => state.createPage.name)
+    formData.append('name',name);
+    const description = yield select( state => state.createPage.description)
+    formData.append('description',description);
+    const quantity = yield select( state => state.createPage.quantity)
+    formData.append('quantity',quantity);
+    yield call(() =>
+      axios.put(`http://localhost:3080/products/${productId}`,
+      formData,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        }
+      })
+    );
+    yield put(setReqStatus('success'));
+    yield put(close())
+  } catch (err) {
+    yield put(setReqStatus('error'));
   }
+} 
+export function* productCreateSaga () {
+  yield takeEvery(EDIT_PRODUCT_SAGA, editProductSaga);
+  yield takeEvery(DOWNLOAD_PRODUCT_SAGA, downloadProductSaga);
+  yield takeEvery(CREATE_PRODUCT_SAGA, createPageSaga);
 }
+

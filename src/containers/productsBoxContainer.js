@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ProductsBox from '../components/ProductsPage/ProductsBox/ProductsBox'
 
-import { downloadProducts, updateCounter, addToCard, cleanProducts} from '../redux/products/products-actions';
+import { downloadProducts, updateCounter, addToCart, cleanProducts} from '../redux/products/products-actions';
 let mapStateToProps = (state) => {  
     return{
         products: state.productsPage.products,
@@ -20,7 +20,7 @@ let mapDispatchToProps = (dispath) => {
             dispath(updateCounter(id, value))
         },
         onAddToCart: (id) => {
-            dispath(addToCard(id))
+            dispath(addToCart(id))
         },
         onDestroyBox : () => {
             dispath(cleanProducts());
