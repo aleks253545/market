@@ -26,7 +26,7 @@ function Product(
   let quantityComn = quantity,
   counter;
   const addToCart = () => {
-    onAddToCart(id)
+    onAddToCart(id,quantityComn)
   }
   if(quantityComn > 0 && userId !== owner) {
     counter=(

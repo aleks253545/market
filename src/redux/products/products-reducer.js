@@ -1,5 +1,5 @@
 
-import { SET_PRODUCTS, SET_COUNTER, ADD_TO_CART, CLEAN_PRODUCTS, CHANGE_FILTER} from '../constants';
+import { SET_PRODUCTS, CLEAN_PRODUCTS, CHANGE_FILTER, UPDATE_QUANTITY, UPDATE_COUNTER} from '../constants';
 
 
 
@@ -21,23 +21,15 @@ let productsReducer = (state = initialState, action) => {
         offset: state.offset + action.products.length
       }
     }
-    case SET_COUNTER: {
+    case UPDATE_COUNTER: {
       let products = state.products.concat();
-      products.find((product) => product.id === action.id).quantity = action.value;
+      let product = products.find((product) => product.id === action.id);
+      if( action.value <= product.maxQuantitiy && action.value > 0 ){
+        product.quantity = action.value;
+      }
       return {
         ...state,
          products: products
-      }
-    }
-    case ADD_TO_CART:{
-      return {
-        ...state,
-        products: state.products.concat().map((product)=> {
-          if(action.productId === product.id){
-            product.quantity = action.counter;
-          }
-          return product
-        })
       }
     }
     case CLEAN_PRODUCTS: {
@@ -51,6 +43,20 @@ let productsReducer = (state = initialState, action) => {
       return {
         ...state,
         prodFilter: action.prodFilter
+      }
+    }
+    case UPDATE_QUANTITY: {
+      let products = state.products.concat();
+      let product = products.find((product) => product.id === action.id);
+      product.maxQuantitiy = action.maxQuantitiy;
+      if(action.maxQuantitiy > 0){
+        product.quantity = 1;
+      }else {
+        product.quantity = 0;
+      }
+      return { 
+        ...state, 
+        products
       }
     }
     default : {
