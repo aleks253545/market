@@ -1,6 +1,7 @@
 import { SET_CART_PRODUCTS,SET_CART_COUNTER, DOWNLOAD_CART_PRODUCTS_SAGA, UPDATE_CART_COUNTER_SAGA, UPDATE_CART_SAGA, DELETE_CART_PRODUCT_CAGA, DELTE_PRODUCT_FROM_CART, ADD_TO_CART_SAGA, ADD_TO_CART} from '../constants';
-import axios from 'axios'
-import {takeEvery, call, put, select, all} from 'redux-saga/effects';
+import axios from 'axios';
+import {config} from '../config'
+import {takeEvery, call, put, select} from 'redux-saga/effects';
 import { updateQuantity } from '../products/products-actions';
 
 export const setCartProducts = (cartProducts) => {
@@ -23,26 +24,22 @@ export const setCartCounter = (value, id) => {
   }
 }
 
-export const downloadCartProducts = (login, password) => ({
+export const downloadCartProducts = () => ({
   type: DOWNLOAD_CART_PRODUCTS_SAGA,
-  login,
-  password
+
 });
 
 function* downloadCartProductsSaga() {
   try {
     const products = yield call(() =>
-      axios.get(`http://localhost:3080/carts`, {
+      axios.get(config.domain + '/carts', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         }
       })
     );
-
-    if(products.data.length > 0){
       yield put(setCartProducts(products.data));
-    }
   } catch(err) {
     console.log(err);
   }
@@ -67,7 +64,7 @@ function* updateCartCounterSaga ({id, value}) {
   try {
     const page = yield select(state => state.cartPage.page);
     const count = yield call(() =>
-      axios.put(`http://localhost:3080/counters/${id}`,{
+      axios.put(config.domain + `/counters/${id}`,{
         value, 
         page
       },
@@ -94,7 +91,7 @@ export const updateCart = (typeReq) => ({
 function* updateCartSaga ({typeReq}) {
   try {
     const products = yield call(() =>
-      axios.put(`http://localhost:3080/carts`,{
+      axios.put(config.domain + `/carts`,{
         type: typeReq
       },
       {
@@ -111,26 +108,25 @@ function* updateCartSaga ({typeReq}) {
 
 }
 
-export const deleteCartProduct = (cartId) => ({
+export const deleteCartProduct = (productId) => ({
   type: DELETE_CART_PRODUCT_CAGA,
-  cartId
+  productId
 });
 
 
 
-function* deleteCartProductSaga ({cartId}) {
+function* deleteCartProductSaga ({productId}) {
   try {
-    console.log(cartId ,'cartid')
-     const productId =yield call(() =>
-      axios.delete(`http://localhost:3080/carts/${cartId}`,{
+     const cartProduct =yield call(() =>
+      axios.delete( config.domain + `/carts/${productId}`,{
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json'
       }
       })
     )
-    console.log(productId ,'productId')
-    yield put(deleteProductFromCart(productId.data));
+
+    yield put(deleteProductFromCart(cartProduct.data));
   } catch (err) {
     console.log(err)
   }
@@ -145,7 +141,7 @@ export const addToCart = (productId, counter) => ({
 function* addToCartSaga ({productId, counter}) {
   try {
     const response = yield call(() =>
-      axios.post(`http://localhost:3080/carts`,{
+      axios.post(config.domain + '/carts',{
         productId,
         counter
       },
@@ -156,13 +152,14 @@ function* addToCartSaga ({productId, counter}) {
         }
       })
     );
-    console.log(response);
-    let product = yield select( state => state.productsPage.product.find(item => item.id == productId ));
-    product.quantity = response.data.cartQuantity;
+    let product = yield select( state => state.productsPage.products.concat().find(item => item.id === productId ));
+    let cartProduct = {
+      ...product,
+      quantity: response.data.cartQuantity
+    }
     yield put(updateQuantity(productId, response.data.maxQuantity))
-    yield put(addTocart(productId, product));
+    yield put(addTocart(productId, cartProduct));
   } catch (err) {
-    console.log(err);
   }
 
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA, CREATE_PRODUCT_SAGA, DOWNLOAD_PRODUCT_SAGA, EDIT_PRODUCT_SAGA} from '../constants';
-import { put, call, all ,takeEvery, select} from 'redux-saga/effects';
+import { put, call ,takeEvery, select} from 'redux-saga/effects';
+import { config } from '../config';
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,
@@ -36,11 +37,7 @@ export const setResData = (data) => ({
   data
 });
 
-const config = {
-  onUploadProgress: function(progressEvent) {
-    var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-  }
-};
+
 
 export const crateProduct = () => ({
   type: CREATE_PRODUCT_SAGA,
@@ -62,7 +59,7 @@ function* createPageSaga () {
     let quantity = yield select( state => state.createPage.quantity)
     formData.append('quantity',quantity);
     yield call(() =>
-      axios.post('http://localhost:3080/products',formData,
+      axios.post(config.domain + '/products',formData,
       {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -87,7 +84,7 @@ export const downloadProduct = (id) => ({
 function* downloadProductSaga({ id }) {
   try {
     let product = yield call( () =>
-      axios.get(`http://localhost:3080/products/${id}`)
+      axios.get(config.domain + `/products/${id}`)
      );
      yield put(setResData(product.data))
   } catch(err) {
@@ -119,7 +116,7 @@ function* editProductSaga () {
     const quantity = yield select( state => state.createPage.quantity)
     formData.append('quantity',quantity);
     yield call(() =>
-      axios.put(`http://localhost:3080/products/${productId}`,
+      axios.put( config.domain + `/products/${productId}`,
       formData,
       {
         headers: {

@@ -33,7 +33,7 @@ let cartReducer = (state = initialState, action ) => {
         cartProducts
       }
     }
-    case ADD_TO_CART:{
+    case ADD_TO_CART: {
       let cartProducts = state.cartProducts.concat();
       let product= cartProducts.find((product) => product.id === action.productId);
       if( product) {

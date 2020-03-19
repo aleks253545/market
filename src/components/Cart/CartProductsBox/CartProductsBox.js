@@ -6,7 +6,10 @@ import { useEffect } from "react";
 
 function CartProductsBox(props) {
   useEffect(() =>{
-      props.downloadProductOnCart();
+    // if(!props.cartProducts.length) {
+    //   props.downloadProductOnCart();
+    // }
+
       return () => {
 
       }

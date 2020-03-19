@@ -19,7 +19,15 @@ function MainHeader(props) {
               <span className = {s.dropBlock} onClick = {()=> props.onLogOut()}>Log Out</span>
             </div> 
             <Link to = '/cart'>
-              <img src = {cart}></img>
+              <div className = {s.position}>
+                {
+                  props.cartPdouctsLength > 0?
+                    (<span className = {s.elipse}></span>):
+                    ''
+                }
+                <img src = {cart}></img>
+                
+              </div>
             </Link>
             
           </div>

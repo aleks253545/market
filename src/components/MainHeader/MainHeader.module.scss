@@ -6,6 +6,18 @@
   justify-content: space-between;
   align-items: center;
 }
+.position { 
+  position: relative;
+}
+.elipse {
+  height: 0%;
+  left:75%;
+  height: 8px;
+  width:8px;
+  border-radius: 50%;
+  background-color: $primary-color;
+  position: absolute;
+}
 .logo{
   margin-left: 5rem;
   font-style: normal;

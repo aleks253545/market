@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { put, takeEvery, call, select, takeLatest } from 'redux-saga/effects'
 import { CHANGE_LOGIN, CHANGE_PASSWORD, SIGN_IN_USER, LOG_OUT, SAVE_TOKEN, CHECK_TOKEN_SAGA, SIGN_IN_SAGA, SIGN_UP_SAGA } from '../constants';
-
+import { downloadCartProducts} from '../cart/cart-actions';
+import { config } from '../config';
 
 export const changeLogin = (login) => ({
   type:CHANGE_LOGIN,
@@ -43,7 +44,7 @@ function* checkTokenSaga() {
   try {
     if (localStorage.getItem('token')) {
       const user = yield call(() => 
-        axios.get('http://localhost:3080/users', {
+        axios.get(config.domain + '/users', {
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
               'Content-Type': 'application/json'
@@ -67,21 +68,22 @@ export const signIn = (login, password) => ({
 function* SigInUserSaga({login, password}) {
   try { 
     const request = yield call(() =>
-      axios.post(`http://localhost:3080/users/auth`,{
+      axios.post(config.domain + `/users/auth`,{
         username:login,
         password
       })
     );
     yield put(saveToken(request.data.access_token));
     const user = yield call(() =>
-      axios.get('http://localhost:3080/users', {
+      axios.get( config.domain + '/users', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json'
         }
       })
     );
-    yield put(signInUser(user.data))
+    yield put(signInUser(user.data));
+    yield put(downloadCartProducts());
   } catch(err) {
     console.log(err);
   }
@@ -98,12 +100,12 @@ export const signUp = (login, password) => ({
 function* SigUpUserSaga({login, password}) {
   try{
     const user = yield call(() =>
-      axios.post('http://localhost:3080/users',{
+      axios.post( config.domain + '/users',{
         username: login,
         password
       })
     );
-    yield put(signInUser(user.data))
+    yield put(signInUser(user.data));
   } catch (err) {
     console.log(err);
   }

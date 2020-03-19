@@ -57,14 +57,15 @@ function Product(
             edit
           </Link>): 
         inCart ?
-        (<button className = {s.rubbishBtn} onClick = {() => onDeleteCartProduct(cartId)}>
+        (<button className = {s.rubbishBtn} onClick = {() => onDeleteCartProduct(id)}>
           <img src = {rubbish}></img>
           Delete
         </button>):
+        quantityComn > 0 ?
         (<button className = {s.addBtn} onClick = {addToCart}>
           <img src = {cart}></img>
           Add to cart
-        </button>)
+        </button>): ''
       }
       
     </div>
