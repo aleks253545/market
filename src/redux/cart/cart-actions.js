@@ -3,6 +3,7 @@ import axios from 'axios';
 import {config} from '../config'
 import {takeEvery, call, put, select} from 'redux-saga/effects';
 import { updateQuantity } from '../products/products-actions';
+import * as selectors from '../selectors/selectors';
 
 export const setCartProducts = (cartProducts) => {
   return {
@@ -62,7 +63,7 @@ export const updateCartCounter = (id, value) => ({
 
 function* updateCartCounterSaga ({id, value}) {
   try {
-    const page = yield select(state => state.cartPage.page);
+    const page = yield select(selectors.getPage);
     const count = yield call(() =>
       axios.put(config.domain + `/counters/${id}`,{
         value, 

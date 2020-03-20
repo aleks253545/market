@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { put, takeEvery, call, select, takeLatest } from 'redux-saga/effects'
+import { put, takeEvery, call,  takeLatest } from 'redux-saga/effects'
 import { CHANGE_LOGIN, CHANGE_PASSWORD, SIGN_IN_USER, LOG_OUT, SAVE_TOKEN, CHECK_TOKEN_SAGA, SIGN_IN_SAGA, SIGN_UP_SAGA } from '../constants';
 import { downloadCartProducts} from '../cart/cart-actions';
 import { config } from '../config';

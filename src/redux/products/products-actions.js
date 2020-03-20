@@ -2,6 +2,8 @@ import axios from 'axios'
 import { SET_PRODUCTS, CLEAN_PRODUCTS, CHANGE_FILTER, UPDATE_COUNTER, DOWNLOAD_PRODUCTS_SAGA, UPDATE_QUANTITY} from '../constants';
 import { put, call , takeEvery, all, select } from 'redux-saga/effects';
 import { config } from '../config';
+import * as productsApi from '../../api/products'
+import * as selectors from '../selectors/selectors'
 
 export const setProducts = (products) => {
   return {
@@ -41,8 +43,8 @@ export const downloadProducts = () => ({
 
 export function* downloadProductsSaga () {
   try {
-    const offset = yield select(state => state.productsPage.offset);
-    const products = yield call(() => axios.get(config.domain + `/products?offset=${offset}`));
+    const offset = yield select(selectors.getOffset);
+    const products = yield call(productsApi.downloadProducts, offset);
     console.log(products.data);
     yield put(setProducts(products.data));
   } catch (err) {

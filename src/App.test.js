@@ -3,12 +3,14 @@ import { render } from '@testing-library/react';
 import App from './App';
 import axios from 'axios';
 import {expectSaga} from 'redux-saga-test-plan';
-
+import * as selectors from './redux/selectors/selectors'
+import config from './redux/config';
+import * as matchers from 'redux-saga-test-plan/matchers';
 import { put, take, call, run , select} from 'redux-saga/effects';
 import { downloadProductsSaga, downloadProducts, setProducts } from './redux/products/products-actions';        
 import productsReducer from './redux/products/products-reducer';
-
-
+import * as productsApi from './api/products';
+import { testSaga } from 'redux-saga-test-plan';
 let initialState = {
   products:[],
   offset:0,
@@ -32,12 +34,42 @@ it('add products in array ', async () => {
       .run()
   })
 
+  it('should change click counter (integration test)', async () => {
+    let initialState = {
+      products:[],
+      offset:0,
+      page: 'products',
+      prodFilter: 'All'
+    }            
 
-  it('handles reducers and store state', async () => {
-    return expectSaga(downloadProductsSaga)
-    .withReducer(productsReducer, initialState)
-    .hasFinalState({
-      page:'products'
-    })
-    .run()
-  });
+    const saga = expectSaga(downloadProductsSaga)
+        .provide([
+            [call(productsApi.downloadProducts),{
+              id:'1',
+              name: ' 2'
+            }]
+        ])
+        .withReducer(productsReducer, initialState)
+
+    const result = await saga
+        .dispatch(downloadProducts)
+        .run()
+
+    expect(result.storeState.products).toBe([{
+      id:'1',
+      name: ' 2'
+    }])
+})
+
+  // let saga = testSaga(downloadProductsSaga);
+  // let products = [
+  //   {
+  //     id:'sasa',
+  //     name: 'dsds'
+  //   }
+  // ]
+  // // try path
+  // saga.next().select(selectors.getOffset);
+  // saga.next(0).call(productsApi.downloadProducts,0);
+  // saga.next(products).put({type: 'SET_PRODUCTS', products});
+  // saga.next().isDone();

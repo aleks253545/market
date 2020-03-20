@@ -2,6 +2,8 @@ import axios from 'axios';
 import { CHANGE_NAME, CHANGE_DESCRIPTION, SET_IMAGE, CHANGE_QUANTITY, CLOSE, SET_REQ, SET_RES_DATA, CREATE_PRODUCT_SAGA, DOWNLOAD_PRODUCT_SAGA, EDIT_PRODUCT_SAGA} from '../constants';
 import { put, call ,takeEvery, select} from 'redux-saga/effects';
 import { config } from '../config';
+import * as selectors from '../selectors/selectors';
+
 
 export const changeName = (name) => ({
   type:CHANGE_NAME,
@@ -46,17 +48,16 @@ export const crateProduct = () => ({
 function* createPageSaga () {
   try {
     let formData = new FormData();
-    const image = yield select( state => state.createPage.image);
+    const image = yield select(selectors.getProductImg);
     if (image) {
       formData.append('image',image);
-      let path = yield select( state => state.createPage.image.path);
-      formData.append('imgPath',path);
+      formData.append('imgPath',image.path);
     }
-    let name = yield select( state => state.createPage.name)
+    let name = yield select( selectors.getProductName)
     formData.append('name',name);
-    let description = yield select( state => state.createPage.description)
+    let description = yield select(selectors.getDescription)
     formData.append('description',description);
-    let quantity = yield select( state => state.createPage.quantity)
+    let quantity = yield select(selectors.getProductQuantity)
     formData.append('quantity',quantity);
     yield call(() =>
       axios.post(config.domain + '/products',formData,
@@ -103,17 +104,16 @@ function* editProductSaga () {
   try {
     let formData = new FormData();
     const image = yield select( state => state.createPage.image);
-    const productId = yield select( state => state.createPage.id);
+    const productId = yield select( selectors.getEditProductId);
     if (image) {
       formData.append('image',image);
-      const path = yield select( state => state.createPage.image.path);
-      formData.append('imgPath',path);
+      formData.append('imgPath',image.path);
     }
-    const name = yield select( state => state.createPage.name)
+    let name = yield select( selectors.getProductName)
     formData.append('name',name);
-    const description = yield select( state => state.createPage.description)
+    let description = yield select(selectors.getDescription)
     formData.append('description',description);
-    const quantity = yield select( state => state.createPage.quantity)
+    let quantity = yield select(selectors.getProductQuantity)
     formData.append('quantity',quantity);
     yield call(() =>
       axios.put( config.domain + `/products/${productId}`,
